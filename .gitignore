@@ -1,0 +1,9 @@
+bin/
+vendor/
+app/cache/
+app/logs/
+web/bundles/
+composer.lock
+app/bootstrap.php.cache
+*.php~
+.DS_Store
