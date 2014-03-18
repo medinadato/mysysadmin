@@ -1,0 +1,28 @@
+{% extends 'MDNAdminBundle::bridge.html.twig' %}
+
+{% block body %}
+<table>
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Id</th>
+            <th>Code</th>
+            <th>Name</th>
+            <th>Created At</th>
+            <th>Enabled</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for role in roles %}
+        <tr>
+            <td><!--<a href="{{ path('mdn_admin_role_edit', {'id':role.getId}) }}">Edit</a> | <a href="{{ path('mdn_admin_role_remove', {'id':role.getId}) }}">Remove</a>--></td>
+            <td>{{ role.getId }}</td>
+            <td>{{ role.getCode }}</td>
+            <td>{{ role.getName }}</td>
+            <td>-</td>
+            <td>{{ (role.isEnabled) ? 'Yes' : 'No' }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

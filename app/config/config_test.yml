@@ -1,0 +1,28 @@
+imports:
+    - { resource: config_dev.yml }
+
+framework:
+    test: ~
+    session:
+        storage_id: session.storage.mock_file
+    profiler:
+        enabled: false
+
+web_profiler:
+    toolbar: false
+    intercept_redirects: false
+
+swiftmailer:
+    disable_delivery: true
+
+# Doctrine Configuration
+doctrine:
+    dbal:
+        driver: pdo_sqlite
+        path: :memory:
+        # instead memory use the path
+        # path: %kernel.cache_dir%/test.db
+        memory: true
+    orm:
+        auto_generate_proxy_classes: true
+        auto_mapping: true

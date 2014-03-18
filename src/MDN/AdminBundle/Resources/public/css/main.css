@@ -1,0 +1,27 @@
+/* 
+    Document   : main.css
+    Created on : Feb 10, 2014, 9:34:12 PM
+    Author     : Renato Medina <medinadato@gmail.com>
+    Description: Main CSS 
+*/
+
+div#header { display: block; width: 100%; background: #999;  }
+div#header #top { float: left; display: block; width: 100%; text-align: right; } 
+div#header #top a { padding: 10px; }
+div#header #top a.logo { float: left; }
+div#header .menu { float: left; clear: both; display: block; width: 100%; margin: 15px 0; background-color: #ccc; padding: 5px 0; text-indent: 5px; }
+div#header .menu ul { padding: 0; margin: 0; }
+div#header .menu ul li { float: left; display: inline-block; margin-right: 50px; }
+div#header .menu ul li:hover { background-color: #999 }
+div#header .menu ul li ul { float: left; position: absolute; display: none; background: #ccc; }
+div#header .menu ul li:hover ul { display:block }
+div#header .menu ul li ul li { clear: both; padding: 3px; }
+#content-head .content-shortcuts { float: right;  }
+#content-head .content-shortcuts ul { float: right; list-style: none; }
+#content-head .content-shortcuts ul li { float: left; margin-right: 10px }
+div.flashMessages { float: left; display: block; width: 100%; margin: 5px 0; }
+div.flashMessages div { float: left; clear: both; width: 100%; padding: 5px; }
+div.flashMessages .flash-success { background-color: #99ff99 }
+div.flashMessages .flash-error { background-color: #CC0000; }
+table { width: 100%; border: 1px solid #000; }
+table td { border: 1px solid #ccc; }

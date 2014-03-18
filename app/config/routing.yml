@@ -1,0 +1,3 @@
+mdn_admin:
+    resource: "@MDNAdminBundle/Resources/config/routing.yml"
+    prefix:   /

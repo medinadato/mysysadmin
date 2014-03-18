@@ -1,0 +1,43 @@
+security:
+    encoders:
+        MDN\AdminBundle\Entity\User: sha512
+
+    role_hierarchy:
+        ROLE_ADMIN:       ROLE_USER
+        ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+
+    providers:
+        database: 
+          entity: { class: MDNAdminBundle:User, property: username }
+          
+#        in_memory:
+#          memory:
+#            users:
+#                mdnadmin: { password: 123456, roles: 'ROLE_SUPER_ADMIN' }
+            
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        
+#        login:
+#            pattern: ^/admin/login$
+#            security: false
+        
+        secured_area:
+            pattern:    ^/
+            form_login:
+                check_path: mdn_admin_login_check
+                login_path: mdn_admin_login_login
+            logout:
+                path:   mdn_admin_login_logout
+                target: mdn_admin_login_login
+            anonymous: ~
+            http_basic:
+                realm: "Secured Demo Area"
+
+    access_control:
+        - { path: ^/admin/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/, roles: ROLE_ADMIN }
+        #- { path: ^/admin/tag/(edit|add|delete)/(\d+), roles: ROLE_USER, methods: DELETE,PUT,POST }
+        #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }

@@ -1,0 +1,66 @@
+
+mdn_admin_dashboard_index:
+    pattern:  /admin/dashboard/
+    defaults: { _controller: MDNAdminBundle:Index:index }
+    methods:  GET
+
+mdn_admin_index_index:
+    pattern:  /admin/
+    defaults: { _controller: MDNAdminBundle:Index:index }
+    methods:  GET
+
+# login
+mdn_admin_login_login:
+    pattern:  /admin/login/
+    defaults: { _controller: MDNAdminBundle:Login:login }
+    methods:  GET
+    
+mdn_admin_login_check:
+    pattern:  /admin/login_check/
+    defaults: { _controller: MDNAdminBundle:Login:loginCheck }
+    methods:  POST
+
+mdn_admin_login_logout:
+    pattern:  /admin/logout/
+    defaults: { _controller: MDNAdminBundle:Login:logout }
+    methods:  GET
+
+# role   
+mdn_admin_role_index:
+    pattern:  /admin/role/
+    defaults: { _controller: MDNAdminBundle:Role:index }
+    methods:  GET
+    
+mdn_admin_role_add:
+    pattern:  /admin/role/add
+    defaults: { _controller: MDNAdminBundle:Role:edit }
+    methods:  GET
+    
+mdn_admin_role_edit:
+    pattern:  /admin/role/edit/{id}
+    defaults: { _controller: MDNAdminBundle:Role:edit }
+    
+mdn_admin_role_remove:
+    pattern:  /admin/role/remove/{id}
+    defaults: { _controller: MDNAdminBundle:Role:remove }
+    methods:  GET
+    
+# user    
+mdn_admin_user_index:
+    pattern:  /admin/user/
+    defaults: { _controller: MDNAdminBundle:User:index }
+    methods:  GET
+    
+mdn_admin_user_add:
+    pattern:  /admin/user/add
+    defaults: { _controller: MDNAdminBundle:User:edit }
+    methods:  GET
+    
+mdn_admin_user_edit:
+    pattern:  /admin/user/edit/{id}
+    defaults: { _controller: MDNAdminBundle:User:edit }
+    
+mdn_admin_user_remove:
+    pattern:  /admin/user/remove/{id}
+    defaults: { _controller: MDNAdminBundle:User:remove }
+    methods:  GET

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+
+        {% block metatags %}
+
+        <meta charset="utf-8">
+        <title>MDN Admin :: Smart Applications</title>
+        <meta name="description" content="MDN Solutions Admin">
+        <meta name="author" content="Renato Medina">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+        {% endblock %}	
+
+	{% block stylesheets %}
+        
+        {% stylesheets 'bundles/mdnadmin/css/*' filter='cssrewrite' %}
+        <link rel="stylesheet" href="{{ asset_url }}" />
+        {% endstylesheets %}
+
+        {% endblock %}	
+
+    </head>
+    <body>
+        <div id="main">
+
+            <!-- Begin Header -->
+            <div id="header">
+
+                {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                <div id="top">
+                    <a href="/" class="logo">MDN Admin</a>
+                    <!--<a href="#" >John Doe</a> -->
+                    <a href="#" >{{ app.user.username }}</a> 
+                    
+                    <a href="{{ path("mdn_admin_login_logout") }}" title="Logout">Logout</a>
+                </div>
+                <div class="menu">
+                    <ul>
+                        <li><a href="{{ path("mdn_admin_dashboard_index") }}">Dashboard</a></li>
+                        <li>Recipe
+                            <ul>
+                                <li><a href="{{ path("yumi_admin_ingredient_index") }}">Ingredient</a></li>
+                                <li><a href="{{ path("yumi_admin_tag_index") }}">Tag</a></li>
+                                <li><a href="{{ path("yumi_admin_measure_index") }}">Measure</a></li>
+                            </ul>
+                        </li>
+                        <li>Settings
+                            <ul>
+                                <li><a href="{{ path("mdn_admin_user_index") }}">User</a></li>
+                                <li><a href="{{ path("mdn_admin_role_index") }}">Role</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                {% endif %}
+
+            </div>
+            <!-- End Header -->
+
+
+            <!-- Begin FlashMessages -->
+            <div class="flashMessages">
+                {% for key, flashMessages in app.session.flashbag.all() %}
+                    {% for flashMessage in flashMessages %}
+                    <div class="flash-{{ key }}">
+                        {{ flashMessage }}
+                    </div>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+            <!-- End FlashMessages -->
+
+
+            <!-- Begin Content Block -->
+            <div id="content">
+                <div id="content-head">
+                    
+                    {% if template_shortcuts is defined %}
+                    <div class="content-shortcuts">
+                        <ul>
+                            {% for shortcut in template_shortcuts %}
+                            <li><a href="{{ shortcut['path'] }}">{{ shortcut['title'] }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                        
+                    {% if template_title is defined %}
+                    <div class="content-title"><h1>{{ template_title }}</h1></div>
+                    {% endif %}
+                    
+                </div>
+
+                {% block body %}{% endblock %}	  
+            </div>
+            <!-- End Content Block -->
+            
+
+            <!-- Begin Footer -->
+                {% block footer %}
+                    <div class="footer">
+                        <p class="copyright">© 2014 <a href="http://www.mdnsolutions.com" target="_blank" title="MDN Solutions" rel="home">MDN Solutions</a></p>
+                    </div>
+                {% endblock %}
+            <!-- End Footer -->
+
+
+            <!-- Begin Javascript Block -->
+                {% block javascripts %}
+                {% endblock %}
+            <!-- End Javascript Block -->
+
+        </div>
+    </body>
+
+</html>

@@ -1,0 +1,14 @@
+parameters:
+#    mdn_admin.example.class: MDN\AdminBundle\Example
+
+services:
+#    mdn_admin.example:
+#        class: %mdn_admin.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
+
+    admin.tokens.action_listener:
+        class: MDN\AdminBundle\EventListener\TokenListener
+        arguments: ["%tokens%"]
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
+            #- { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
