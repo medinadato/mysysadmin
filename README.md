@@ -9,7 +9,7 @@ System to manage the information related to your servers, domains, users and so 
 
 In order to install the libraries of the system run composer:
 
-$ composer.phar install --prefer-dist
+    $ composer.phar install --prefer-dist
 
 ## Virtual host
 
@@ -28,9 +28,8 @@ You can forward engineer the tables from [mysysadmin.mwb](https://github.com/med
 
 Tip: Don't forget to create the database/user prior to import the tables:
 
-```mysql
-$ mysql -uroot -p -e "CREATE DATABASE mysysadmin CHARACTER SET utf8 COLLATE utf8_general_ci";
-$ mysql -uroot -p -e "GRANT ALL PRIVILEGES ON mysysadmin.* TO 'mysysadmin'@'%' IDENTIFIED BY 'mypass' WITH GRANT OPTION";
+    $ mysql -uroot -p -e "CREATE DATABASE mysysadmin CHARACTER SET utf8 COLLATE utf8_general_ci";
+    $ mysql -uroot -p -e "GRANT ALL PRIVILEGES ON mysysadmin.* TO 'mysysadmin'@'%' IDENTIFIED BY 'mypass' WITH GRANT OPTION";
 
 ### Via Symfony Console
 
@@ -38,11 +37,9 @@ $ mysql -uroot -p -e "GRANT ALL PRIVILEGES ON mysysadmin.* TO 'mysysadmin'@'%' I
 
 	ATTENTION: This operation should not be executed in a production environment
 
-```shell
-$ php app/console doctrine:schema:drop --env=dev --em=default --force
-$ php app/console doctrine:schema:create --env=dev --em=default
+    $ php app/console doctrine:schema:drop --env=dev --em=default --force
+    $ php app/console doctrine:schema:create --env=dev --em=default
 
 2. Initial data
 
-```shell
-$ php app/console doctrine:fixtures:load --env=dev --no-interaction
+    $ php app/console doctrine:fixtures:load --env=dev --no-interaction
