@@ -23,6 +23,7 @@ Well, if you using Apache, you are on your own. it should not be hard, though.
 
 ## Database
 
+### Via SQL
 You can forward engineer the tables from [mysysadmin.mwb](https://github.com/medinadato/mysysadmin/blob/master/docs/db/data%20modeling/mysysadmin.mwb) or run [mysysadmin.sql](https://github.com/medinadato/mysysadmin/blob/master/docs/db/dump/mysysadmin.sql)
 
 Tip: Don't forget to create the database/user prior to import the tables:
@@ -30,3 +31,6 @@ Tip: Don't forget to create the database/user prior to import the tables:
 ```mysql
 $ mysql -uroot -p -e "CREATE DATABASE mysysadmin CHARACTER SET utf8 COLLATE utf8_general_ci";
 $ mysql -uroot -p -e "GRANT ALL PRIVILEGES ON mysysadmin.* TO 'mysysadmin'@'%' IDENTIFIED BY 'mypass' WITH GRANT OPTION";
+
+### Via Symfony Console
+
