@@ -7,3 +7,4 @@ composer.lock
 app/bootstrap.php.cache
 *.php~
 .DS_Store
+/nbproject/private/
