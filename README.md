@@ -34,3 +34,15 @@ $ mysql -uroot -p -e "GRANT ALL PRIVILEGES ON mysysadmin.* TO 'mysysadmin'@'%' I
 
 ### Via Symfony Console
 
+1. Database structure
+
+	ATTENTION: This operation should not be executed in a production environment
+
+```shell
+$ php app/console doctrine:schema:drop --env=dev --em=default --force
+$ php app/console doctrine:schema:create --env=dev --em=default
+
+2. Initial data
+
+```shell
+$ php app/console doctrine:fixtures:load --env=dev --no-interaction
