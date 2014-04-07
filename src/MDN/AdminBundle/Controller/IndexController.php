@@ -5,13 +5,13 @@ namespace MDN\AdminBundle\Controller;
 use MDN\AdminBundle\Controller;
 
 /**
- * 
+ * @author Renato Medina <medina@mdnsolutions.com>
  */
 class IndexController extends Controller
 {
     /**
      * 
-     * @return type
+     * @return array
      */
     public function indexAction()
     {

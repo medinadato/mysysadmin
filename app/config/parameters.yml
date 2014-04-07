@@ -3,8 +3,8 @@ parameters:
     database_driver: pdo_mysql
     database_host: 127.0.0.1
     database_port: 3068
-    database_name: 
-    database_user: 
+    database_name: null
+    database_user: null
     database_password: 0
     mailer_transport: smtp
     mailer_host: 127.0.0.1

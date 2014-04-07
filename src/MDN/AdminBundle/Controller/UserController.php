@@ -23,17 +23,16 @@ class UserController extends Controller
         $userRepo = $this->getRepository('MDNAdminBundle:User');
 
         $users = $userRepo->findAll();
-
-        return array(
-            'content_title' => 'User List',
-            'content_shortcuts' => array(
-                array(
-                    'path' => $this->generateUrl('mdn_admin_user_add'),
-                    'title' => 'Add New',
-                ),
-            ),
-            'users' => $users,
-        );
+        
+        return $this->setTemplateParams(array(
+                            'title' => 'User Edit',
+                            'shortcuts' => array(
+                                array('path' => 'mdn_admin_user_add', 'title' => 'Add New',),
+                            ),
+                        ))
+                        ->renderTemplateParams(array(
+                            'users' => $users,
+                        ));
     }
 
 }

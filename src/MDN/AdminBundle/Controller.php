@@ -30,7 +30,7 @@ class Controller extends SymfonyController implements TokenAuthenticatedControll
     private $template_params = array();
     
     /**
-     * Set parameters to be used by default layout
+     * Set parameters to be used by the default layout
      */
     protected function setTemplateParams($data = array())
     {

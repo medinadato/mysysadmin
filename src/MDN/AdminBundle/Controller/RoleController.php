@@ -22,10 +22,15 @@ class RoleController extends Controller
         $roleRepo = $this->getRepository('MDNAdminBundle:Role');
 
         $roles = $roleRepo->findAll();
-
-        return array(
-            'content_title' => 'Role List',
-            'roles' => $roles,
-            );
+        
+        return $this->setTemplateParams(array(
+                            'title' => 'Role Edit',
+                            'shortcuts' => array(
+                                array('path' => 'mdn_admin_user_add', 'title' => 'Add New',),
+                            ),
+                        ))
+                        ->renderTemplateParams(array(
+                            'roles' => $roles,
+                        ));
     }
 }
