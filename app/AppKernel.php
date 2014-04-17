@@ -18,6 +18,7 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new MDN\AdminBundle\MDNAdminBundle(),
+            new APY\DataGridBundle\APYDataGridBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
