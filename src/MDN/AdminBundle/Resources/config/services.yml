@@ -12,3 +12,7 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
             #- { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
+            
+    mdn_admin.grid.type.user:
+        class: MDN\AdminBundle\Grid\Type\UserType
+        arguments: ['@service_container']

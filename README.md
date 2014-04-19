@@ -3,6 +3,10 @@ mysysadmin
 
 System to manage the information related to your servers, domains, users and so forth. 
 
+# Compatibilities
+
+This application should run on PHP 5.4 or superior and MySQL + 5.0.
+
 # Install
 
 ## Vendors

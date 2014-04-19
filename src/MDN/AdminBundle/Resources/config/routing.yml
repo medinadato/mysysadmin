@@ -49,7 +49,7 @@ mdn_admin_role_remove:
 mdn_admin_user_index:
     pattern:  /admin/user/
     defaults: { _controller: MDNAdminBundle:User:index }
-    methods:  GET
+
     
 mdn_admin_user_add:
     pattern:  /admin/user/add
@@ -60,7 +60,7 @@ mdn_admin_user_edit:
     pattern:  /admin/user/edit/{id}
     defaults: { _controller: MDNAdminBundle:User:edit }
     
-mdn_admin_user_remove:
-    pattern:  /admin/user/remove/{id}
-    defaults: { _controller: MDNAdminBundle:User:remove }
+mdn_admin_user_delete:
+    pattern:  /admin/user/delete/{id}
+    defaults: { _controller: MDNAdminBundle:User:delete }
     methods:  GET
