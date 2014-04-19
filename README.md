@@ -7,7 +7,7 @@ System to manage the information related to your servers, domains, users and so 
 
 ## Vendors
 
-In order to install the libraries of the system run composer:
+In order to install the libraries of the system run composer on the root of the project:
 
     $ composer.phar install --prefer-dist
 
@@ -21,7 +21,17 @@ To install the Nginx's Virtual host check the folder [docs/nginx.conf](https://g
 
 Well, if you using Apache, you are on your own. it should not be hard, though. 
 
-## Database
+## Hosts
+
+If you working locally, you might setup your HOSTS file
+
+XX.X.X.XXX      local.mysysadmin.com
+
+## Initial Data
+
+You need either add the user below into your database or change the connection info at app/config/config_dev.yml
+
+    $ mysql -uroot -p -e "GRANT ALL PRIVILEGES ON mysysadmin.* TO 'mysysadmin'@'localhost' IDENTIFIED BY 'mypass' WITH GRANT OPTION";
 
 There are 2 ways to load the database;
 
@@ -32,7 +42,6 @@ You can forward engineer the tables from [mysysadmin.mwb](https://github.com/med
 Tip: Don't forget to create the database/user prior to import the tables:
 
     $ mysql -uroot -p -e "CREATE DATABASE mysysadmin CHARACTER SET utf8 COLLATE utf8_general_ci";
-    $ mysql -uroot -p -e "GRANT ALL PRIVILEGES ON mysysadmin.* TO 'mysysadmin'@'localhost' IDENTIFIED BY 'mypass' WITH GRANT OPTION";
 
 ### Via Symfony Console
 
@@ -40,7 +49,7 @@ Tip: Don't forget to create the database/user prior to import the tables:
 
 	ATTENTION: This operation should not be executed in a production environment
 
-    $ php app/console doctrine:schema:drop --env=dev --em=default --force
+    $ php app/console doctrine:database:create --env=dev
     $ php app/console doctrine:schema:create --env=dev --em=default
 
 2. Initial data
