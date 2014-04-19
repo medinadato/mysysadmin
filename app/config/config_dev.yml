@@ -40,3 +40,6 @@ doctrine:
                 dbname:   mysysadmin
                 user:     mysysadmin
                 password: 'mypass'
+
+twig:
+    cache:  false
