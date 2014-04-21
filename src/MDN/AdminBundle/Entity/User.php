@@ -5,7 +5,6 @@ namespace MDN\AdminBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
-use APY\DataGridBundle\Grid\Mapping as GRID;
 
 /**
  * User
@@ -13,9 +12,7 @@ use APY\DataGridBundle\Grid\Mapping as GRID;
  * @ORM\Table(name="user")
  * @ORM\Entity
  * 
- 
  */
-//* @GRID\Source(columns="userId, username, createdAt, deletedAt")
 class User implements AdvancedUserInterface
 {
     /**

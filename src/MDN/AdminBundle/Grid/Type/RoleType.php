@@ -17,7 +17,7 @@ use APY\DataGridBundle\Grid\Export\XMLExport;
 use APY\DataGridBundle\Grid\Export\CSVExport;
 use APY\DataGridBundle\Grid\Export\JSONExport;
 
-class UserType 
+class RoleType 
 {
     /**
      *
@@ -47,11 +47,11 @@ class UserType
         $grid = $this->container->get('grid');
         
         // Creates simple grid based on your entity (ORM)
-        $source = new Entity('MDNAdminBundle:User');
+        $source = new Entity('MDNAdminBundle:Role');
         $grid->setSource($source);
 
         // Set the identifier of the grid
-        $grid->setId('mdn_user');
+        $grid->setId('mdn_role');
         
         // Persist state
         $grid->setPersistence(true);
@@ -84,24 +84,24 @@ class UserType
         $grid->addColumn($statusColumn);
 
         // Show/Hide columns
-        $grid->setVisibleColumns(array('userId', 'username', 'createdAt', 'status'));
+        $grid->setVisibleColumns(array('roleId', 'code', 'name', 'createdAt', 'status'));
         
         // Set Default order
-        $grid->setDefaultOrder('userId', 'asc');
+        $grid->setDefaultOrder('roleId', 'asc');
 
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         # Row actions
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // Edit
-        $editRowAction = new RowAction('Edit', 'mdn_admin_user_edit', false, '_self');
-        $editRowAction->setRouteParameters(array('userId'));
-        $editRowAction->setRouteParametersMapping(array('userId' => 'id'));
+        $editRowAction = new RowAction('Edit', 'mdn_admin_role_edit', false, '_self');
+        $editRowAction->setRouteParameters(array('roleId'));
+        $editRowAction->setRouteParametersMapping(array('roleId' => 'id'));
         $grid->addRowAction($editRowAction);
         
-        // DELETE
-        $deleteRowAction = new RowAction('Delete', 'mdn_admin_user_delete', false, '_self');
-        $deleteRowAction->setRouteParameters(array('userId'));
-        $deleteRowAction->setRouteParametersMapping(array('userId' => 'id'));
+        // Delete
+        $deleteRowAction = new RowAction('Delete', 'mdn_admin_role_delete', TRUE, '_self');
+        $deleteRowAction->setRouteParameters(array('roleId'));
+        $deleteRowAction->setRouteParametersMapping(array('roleId' => 'id'));
         $deleteRowAction->manipulateRender(
             function ($action, $row)
             {

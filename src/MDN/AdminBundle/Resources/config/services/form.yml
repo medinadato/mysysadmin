@@ -1,0 +1,5 @@
+services:
+    mdn_admin.form.type.role:
+        class: MDN\AdminBundle\Form\Type\RoleType
+        tags:
+            - { name: form.type, alias: role }

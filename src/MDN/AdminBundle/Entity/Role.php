@@ -63,14 +63,18 @@ class Role
     {
         $this->user = new \Doctrine\Common\Collections\ArrayCollection();
     }
-
+    
     /**
-     * Alias
-     * @return integer 
+     * Set roleId
+     *
+     * @param string $roleId
+     * @return Role
      */
-    public function getId()
+    public function setRoleId($roleId)
     {
-        return $this->roleId;
+        $this->roleId = $roleId;
+    
+        return $this;
     }
     
     /**
