@@ -71,20 +71,20 @@ class RoleType
         # Columns
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // Add a typed column with a rendering callback
-        $statusColumn = new TextColumn(array(
-                    'id' => 'status',
-                    'title' => 'Status',
+        $enabledColumn = new TextColumn(array(
+                    'id' => 'enabled',
+                    'title' => 'Enabled',
                     'sortable' => false,
                     'filterable' => true,
                     'source' => false,
                 ));
-        $statusColumn->manipulateRenderCell(function($value, $row, $router) {
-                    return (empty($row->getField('deletedAt'))) ? 'Active' : 'Inactive';
+        $enabledColumn->manipulateRenderCell(function($value, $row, $router) {
+                    return (empty($row->getField('deletedAt'))) ? 'Yes' : 'No';
                 });
-        $grid->addColumn($statusColumn);
+        $grid->addColumn($enabledColumn);
 
         // Show/Hide columns
-        $grid->setVisibleColumns(array('roleId', 'code', 'name', 'createdAt', 'status'));
+        $grid->setVisibleColumns(array('roleId', 'code', 'name', 'createdAt', 'enabled'));
         
         // Set Default order
         $grid->setDefaultOrder('roleId', 'asc');
@@ -93,26 +93,26 @@ class RoleType
         # Row actions
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // Edit
-        $editRowAction = new RowAction('Edit', 'mdn_admin_role_edit', false, '_self');
+        $editRowAction = new RowAction('Edit', 'mdn_admin_role_update', false, '_self');
         $editRowAction->setRouteParameters(array('roleId'));
         $editRowAction->setRouteParametersMapping(array('roleId' => 'id'));
         $grid->addRowAction($editRowAction);
         
-        // Delete
-        $deleteRowAction = new RowAction('Delete', 'mdn_admin_role_delete', TRUE, '_self');
-        $deleteRowAction->setRouteParameters(array('roleId'));
-        $deleteRowAction->setRouteParametersMapping(array('roleId' => 'id'));
-        $deleteRowAction->manipulateRender(
-            function ($action, $row)
-            {
-                if (!empty($row->getField('deletedAt'))) {
-                    return NULL;
-                }
-
-                return $action;
-            }
-        );
-        $grid->addRowAction($deleteRowAction);
+//        // Delete
+//        $deleteRowAction = new RowAction('Delete', 'mdn_admin_role_delete', TRUE, '_self');
+//        $deleteRowAction->setRouteParameters(array('roleId'));
+//        $deleteRowAction->setRouteParametersMapping(array('roleId' => 'id'));
+//        $deleteRowAction->manipulateRender(
+//            function ($action, $row)
+//            {
+//                if (!empty($row->getField('deletedAt'))) {
+//                    return NULL;
+//                }
+//
+//                return $action;
+//            }
+//        );
+//        $grid->addRowAction($deleteRowAction);
 
         // Set default filters
         // Set prefix titles

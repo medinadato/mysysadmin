@@ -18,17 +18,30 @@ class RoleType extends AbstractType
     {
         $builder->setMethod('post')
                 ->add('roleId', 'hidden')
-                ->add('code', 'text', array(
-                    'max_length' => 255,
-                    ))
-                ->add('name', 'text', array(
-                    'max_length' => 255,
-                    ))
+                ->add('code', 'text', array('attr' => array(
+                        'maxlength' => 255,
+                        'required' => true,
+                    )
+                ))
+                ->add('name', 'text', array('attr' => array(
+                        'maxlength' => 255,
+                        'required' => true,
+                    )
+                ))
+                ->add('enabled', 'choice', array(
+                    'label' => 'Enabled',
+                    'choices' => array(
+                        'Y' => 'Yes',
+                        'N' => 'No',
+                    ),
+                    'required'    => true,
+                    'empty_data'  => null,
+                ))
                 ->add('saveAndAdd', 'submit', array(
                     'attr' => array('formnovalidate' => 'formnovalidate'),
-                    ));
+        ));
     }
-    
+
     /**
      * 
      * @param \Symfony\Component\OptionsResolver\OptionsResolverInterface $resolver

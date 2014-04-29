@@ -31,14 +31,14 @@ mdn_admin_role_index:
     defaults: { _controller: MDNAdminBundle:Role:index }
     methods:  [GET,POST]
     
-mdn_admin_role_add:
-    pattern:  /admin/role/add
-    defaults: { _controller: MDNAdminBundle:Role:add }
+mdn_admin_role_create:
+    pattern:  /admin/role/create
+    defaults: { _controller: MDNAdminBundle:Role:create }
     methods:  [GET,POST]
     
-mdn_admin_role_edit:
-    pattern:  /admin/role/edit/{id}
-    defaults: { _controller: MDNAdminBundle:Role:edit }
+mdn_admin_role_update:
+    pattern:  /admin/role/update/{id}
+    defaults: { _controller: MDNAdminBundle:Role:update }
     methods:  [GET,POST]
     requirements:
         id: "\d+"
@@ -56,14 +56,14 @@ mdn_admin_user_index:
     defaults: { _controller: MDNAdminBundle:User:index }
     methods:  [GET,POST]
     
-mdn_admin_user_add:
-    pattern:  /admin/user/add
-    defaults: { _controller: MDNAdminBundle:User:edit }
+mdn_admin_user_create:
+    pattern:  /admin/user/create
+    defaults: { _controller: MDNAdminBundle:User:update }
     methods:  [GET]
     
-mdn_admin_user_edit:
-    pattern:  /admin/user/edit/{id}
-    defaults: { _controller: MDNAdminBundle:User:edit }
+mdn_admin_user_update:
+    pattern:  /admin/user/update/{id}
+    defaults: { _controller: MDNAdminBundle:User:update }
     methods:  [GET,POST]
     requirements:
         id: "\d+"

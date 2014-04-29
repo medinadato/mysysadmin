@@ -26,7 +26,7 @@ class UserController extends Controller
         $data = $this->setTemplateParams(array(
                     'title' => 'User Edit',
                     'shortcuts' => array(
-                        array('path' => 'mdn_admin_user_add', 'title' => 'Add New',),
+                        array('path' => 'mdn_admin_user_create', 'title' => 'Add New',),
                     ),
                 ))
                 ->renderTemplateParams();

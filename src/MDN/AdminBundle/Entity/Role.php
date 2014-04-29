@@ -3,6 +3,7 @@
 namespace MDN\AdminBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Role
@@ -25,6 +26,13 @@ class Role
      * @var string
      *
      * @ORM\Column(name="code", type="string", length=255, nullable=false)
+     * @Assert\NotBlank()
+     * @Assert\Length(
+     *      min = "5",
+     *      max = "255",
+     *      minMessage = "Your first name must be at least {{ limit }} characters length",
+     *      maxMessage = "Your first name cannot be longer than {{ limit }} characters length"
+     * )
      */
     private $code;
 
@@ -32,6 +40,13 @@ class Role
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255, nullable=false)
+     * @Assert\NotBlank()
+     * @Assert\Length(
+     *      min = "5",
+     *      max = "255",
+     *      minMessage = "Your first name must be at least {{ limit }} characters length",
+     *      maxMessage = "Your first name cannot be longer than {{ limit }} characters length"
+     * )
      */
     private $name;
 
@@ -164,6 +179,17 @@ class Role
     public function getDeletedAt()
     {
         return $this->deletedAt;
+    }
+    
+    /**
+     * 
+     * @return boolean
+     */
+    public function setEnabled($enabled)
+    {
+        $value = ($enabled === "Y") ? NULL : new \DateTime;
+        
+        $this->setDeletedAt($value);
     }
     
     /**

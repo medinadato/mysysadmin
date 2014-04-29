@@ -26,7 +26,7 @@ class RoleController extends Controller
         $data = $this->setTemplateParams(array(
                     'title' => 'Role Edit',
                     'shortcuts' => array(
-                        array('path' => 'mdn_admin_role_add', 'title' => 'Add New',),
+                        array('path' => 'mdn_admin_role_create', 'title' => 'Add New',),
                     ),
                 ))
                 ->renderTemplateParams();
@@ -36,42 +36,68 @@ class RoleController extends Controller
 
     /**
      * 
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @return array
-     * @Template("MDNAdminBundle:Role:edit.html.twig")
+     * @param type $form
+     * @return boolean
      */
-    public function addAction(Request $request)
+    private function processForm($form)
     {
-        $flashBag = $this->get('session')->getFlashBag();
-        
-        $form = $this->createForm('role', null, array(
-            'action' => $this->generateUrl('mdn_admin_role_add'),
-        ));
+        $request = $this->getRequest();
+
+        if ('POST' !== $request->getMethod()) {
+            return false;
+        }
 
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
-
-            $roleEntity = $form->getData();
-
-            $em = $this->getDoctrine()->getManager();
-            $em->merge($roleEntity);
-            $em->flush();
-
-            $flashBag->add('success', 'The changes have been saved.');
-
-            return $this->redirect($this->generateUrl('mdn_admin_role_index'));
+        if (!$form->isValid()) {
+            return false;
         }
 
-        return $this->setTemplateParams(array(
-                            'title' => 'Role Add New',
-                            'shortcuts' => array(
-                                'path' => 'mdn_admin_role_index',
-                                'title' => 'List',
-                            ),
-                        ))
-                        ->renderTemplateParams(array(
-                            'roleForm' => $form->createView(),
+        $roleEntity = $form->getData();
+
+        $em = $this->getDoctrine()->getManager();
+        $em->merge($roleEntity);
+        $em->flush();
+
+        $this->get('session')->getFlashBag()->add('success', 'The changes have been saved.');
+
+        return true;
+    }
+
+    /**
+     * 
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @return array
+     * @Template("MDNAdminBundle:Role:update.html.twig")
+     */
+    public function createAction(Request $request)
+    {
+        try {
+
+            $form = $this->createForm('role', null, array(
+                'action' => $this->generateUrl('mdn_admin_role_create'),
+            ));
+
+            if ($this->processForm($form)) {
+                return $this->redirect($this->generateUrl('mdn_admin_role_index'));
+            }
+        } catch (\Exception $e) {
+
+            $this->get('session')->getFlashBag()->add('error', $e->getMessage());
+        }
+
+        // template
+        $this->setTemplateParams(array(
+            'title' => 'Role Add New',
+            'shortcuts' => array(
+                'path' => 'mdn_admin_role_index',
+                'title' => 'List',
+            ),
+        ));
+
+        // view return
+        return $this->renderTemplateParams(array(
+                    'roleForm' => $form->createView(),
         ));
     }
 
@@ -81,51 +107,45 @@ class RoleController extends Controller
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @return array
      * @throws NotFoundHttpException
-     * @Template("MDNAdminBundle:Role:edit.html.twig")
+     * @Template("MDNAdminBundle:Role:update.html.twig")
      */
-    public function editAction($id, Request $request)
+    public function updateAction($id, Request $request)
     {
-        $flashBag = $this->get('session')->getFlashBag();
         
         try {
 
             $role = $this->getRepository('MDNAdminBundle:Role')->find($id);
 
-            if (!isset($role)) {
+            if ($role === NULL) {
                 throw new NotFoundHttpException('Role not found.');
             }
 
             $form = $this->createForm('role', $role, array(
-                'action' => $this->generateUrl('mdn_admin_role_edit', array(
+                'action' => $this->generateUrl('mdn_admin_role_update', array(
                     'id' => $id,
                 )),
             ));
 
-            $form->handleRequest($request);
-
-            if ($form->isValid()) {
-
-                $this->getDoctrine()->getManager()->flush();
-
-                $flashBag->add('success', 'The changes have been saved.');
-
+            if ($this->processForm($form)) {
                 return $this->redirect($this->generateUrl('mdn_admin_role_index'));
             }
 
-            return $this->setTemplateParams(array(
-                                'title' => 'Role Edit',
-                                'shortcuts' => array(
-                                    array('path' => 'mdn_admin_role_index', 'title' => 'List',),
-                                    array('path' => 'mdn_admin_role_add', 'title' => 'Add New',),
-                                ),
-                            ))
-                            ->renderTemplateParams(array(
-                                'roleForm' => $form->createView(),
+            $this->setTemplateParams(array(
+                'title' => 'Role Edit',
+                'shortcuts' => array(
+                    array('path' => 'mdn_admin_role_index', 'title' => 'List',),
+                    array('path' => 'mdn_admin_role_create', 'title' => 'Add New',),
+                ),
             ));
+
+            return $this->renderTemplateParams(array(
+                        'roleForm' => $form->createView(),
+            ));
+            
         } catch (\Exception $e) {
 
-            $flashBag->add('error', $e->getMessage());
-
+            $this->get('session')->getFlashBag()->add('error', $e->getMessage());
+            
             return $this->redirect($this->generateUrl('mdn_admin_role_index'));
         }
     }
@@ -138,10 +158,10 @@ class RoleController extends Controller
      */
     public function deleteAction($id)
     {
-        $em = $this->getDoctrine()->getManager();
-        $flashBag = $this->get('session')->getFlashBag();
 
         try {
+            $em = $this->getDoctrine()->getManager();
+            
             $roleRepo = $em->getRepository('MDNAdminBundle:Role');
             $role = $roleRepo->find($id);
 
@@ -150,14 +170,13 @@ class RoleController extends Controller
             }
 
             $role->setDeletedAt(new \Datetime());
+            $em->flush();
 
-            $flashBag->add('success', 'Record removed with success');
+            $this->get('session')->getFlashBag()->add('success', 'Record removed with success');
         } catch (\Exception $e) {
 
-            $flashBag->add('error', $e->getMessage());
+            $this->get('session')->getFlashBag()->add('error', $e->getMessage());
         }
-
-        $em->flush();
 
         return $this->redirect($this->generateUrl('mdn_admin_role_index'));
     }

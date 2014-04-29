@@ -93,7 +93,7 @@ class UserType
         # Row actions
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // Edit
-        $editRowAction = new RowAction('Edit', 'mdn_admin_user_edit', false, '_self');
+        $editRowAction = new RowAction('Edit', 'mdn_admin_user_update', false, '_self');
         $editRowAction->setRouteParameters(array('userId'));
         $editRowAction->setRouteParametersMapping(array('userId' => 'id'));
         $grid->addRowAction($editRowAction);
