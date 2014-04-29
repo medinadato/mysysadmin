@@ -29,7 +29,7 @@ Well, if you using Apache, you are on your own. it should not be hard, though.
 
 If you working locally, you might setup your HOSTS file
 
-XX.X.X.XXX      local.mysysadmin.com
+    XX.X.X.XXX      local.mysysadmin.com
 
 ## Initial Data
 
@@ -66,6 +66,14 @@ You might or might not need to run
 
     $ sudo chmod -R 744 .
 
+# Application
+
+## Assets
+
+Composer usually install the assets when you run it. Otherwise you can it yourself.
+I strongly recommend to create the assets as symbolic links. To do so:
+
+    $ php app/console assets:install --symlink
 
 # Access
 
