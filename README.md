@@ -79,10 +79,7 @@ I strongly recommend to create the assets as symbolic links. To do so:
 
 You should be able to access the server by the data:
 
-url:  http://local.mysysadmin.com/admin
-user: admin@mdnsolutions.com
-pass: 123456
-
-
-
+URL:  [http://local.mysysadmin.com/admin](http://local.mysysadmin.com/admin) 
+USER: admin[at]mdnsolutions.com
+PASS: 123456
 
