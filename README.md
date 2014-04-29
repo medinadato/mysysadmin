@@ -83,3 +83,5 @@ URL:  [http://local.mysysadmin.com/admin](http://local.mysysadmin.com/admin)
 USER: admin[at]mdnsolutions.com
 PASS: 123456
 
+# More at:
+[http://blog.mdnsolutions.com](http://blog.mdnsolutions.com)
