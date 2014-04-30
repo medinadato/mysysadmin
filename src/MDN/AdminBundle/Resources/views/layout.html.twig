@@ -16,7 +16,7 @@
 	{% block stylesheets %}
         
         {% stylesheets 'bundles/mdnadmin/css/*' filter='cssrewrite' %}
-        <link rel="stylesheet" href="{{ asset_url }}" />
+        <link rel="stylesheet" href="{{ asset_url }}" media="all" />
         {% endstylesheets %}
 
         {% endblock %}	

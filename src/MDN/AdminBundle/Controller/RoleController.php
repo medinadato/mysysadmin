@@ -39,7 +39,7 @@ class RoleController extends Controller
      * @param type $form
      * @return boolean
      */
-    private function processForm($form)
+    private function processForm(\Symfony\Component\Form\Form $form)
     {
         $request = $this->getRequest();
 
@@ -81,7 +81,7 @@ class RoleController extends Controller
             if ($this->processForm($form)) {
                 return $this->redirect($this->generateUrl('mdn_admin_role_index'));
             }
-        } catch (\Exception $e) {
+        } catch (\RuntimeException $e) {
 
             $this->get('session')->getFlashBag()->add('error', $e->getMessage());
         }
@@ -117,7 +117,7 @@ class RoleController extends Controller
             $role = $this->getRepository('MDNAdminBundle:Role')->find($id);
 
             if ($role === NULL) {
-                throw new NotFoundHttpException('Role not found.');
+                throw new \RuntimeException('Role not found.');
             }
 
             $form = $this->createForm('role', $role, array(
@@ -142,43 +142,12 @@ class RoleController extends Controller
                         'roleForm' => $form->createView(),
             ));
             
-        } catch (\Exception $e) {
+        } catch (\RuntimeException $e) {
 
             $this->get('session')->getFlashBag()->add('error', $e->getMessage());
             
             return $this->redirect($this->generateUrl('mdn_admin_role_index'));
         }
-    }
-
-    /**
-     * 
-     * @param int $id
-     * @return type
-     * @throws NotFoundHttpException
-     */
-    public function deleteAction($id)
-    {
-
-        try {
-            $em = $this->getDoctrine()->getManager();
-            
-            $roleRepo = $em->getRepository('MDNAdminBundle:Role');
-            $role = $roleRepo->find($id);
-
-            if (!isset($role)) {
-                throw new NotFoundHttpException('Role not found.');
-            }
-
-            $role->setDeletedAt(new \Datetime());
-            $em->flush();
-
-            $this->get('session')->getFlashBag()->add('success', 'Record removed with success');
-        } catch (\Exception $e) {
-
-            $this->get('session')->getFlashBag()->add('error', $e->getMessage());
-        }
-
-        return $this->redirect($this->generateUrl('mdn_admin_role_index'));
     }
 
 }

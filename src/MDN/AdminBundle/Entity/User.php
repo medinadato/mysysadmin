@@ -5,6 +5,7 @@ namespace MDN\AdminBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * User
@@ -28,6 +29,12 @@ class User implements AdvancedUserInterface
      * @var string
      *
      * @ORM\Column(name="username", type="string", length=255, nullable=false)
+     * @Assert\NotBlank()
+     * @Assert\Email()
+     * @Assert\Length(
+     *      min = "1",
+     *      max = "255"
+     * )
      */
     private $username;
 
@@ -35,6 +42,7 @@ class User implements AdvancedUserInterface
      * @var string
      *
      * @ORM\Column(name="password", type="string", length=255, nullable=false)
+     * @Assert\NotBlank()
      */
     private $password;
 
@@ -296,6 +304,17 @@ class User implements AdvancedUserInterface
     public function isCredentialsNonExpired()
     {
         return true;
+    }
+    
+    /**
+     * 
+     * @return boolean
+     */
+    public function setEnabled($enabled)
+    {
+        $value = ($enabled === "Y") ? NULL : new \DateTime;
+        
+        $this->setDeletedAt($value);
     }
     
     /**

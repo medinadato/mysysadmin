@@ -4,15 +4,15 @@
     Author     : Renato Medina <medinadato@gmail.com>
     Description: Main CSS 
 */
-
+body { font-family: "Trebuchet MS", Arial, Helvetica, sans-serif; }
 div#header { display: block; width: 100%; background: #999;  }
 div#header #top { float: left; display: block; width: 100%; text-align: right; } 
 div#header #top a { padding: 10px; }
 div#header #top a.logo { float: left; }
-div#header .menu { float: left; clear: both; display: block; width: 100%; margin: 15px 0; background-color: #ccc; padding: 5px 0; text-indent: 5px; }
+div#header .menu { float: left; clear: both; display: block; width: 100%; margin: 15px 0; background-color: #E6EDF5; padding: 5px 0; text-indent: 5px; }
 div#header .menu ul { padding: 0; margin: 0; }
 div#header .menu ul li { float: left; display: inline-block; margin-right: 50px; }
-div#header .menu ul li:hover { background-color: #999 }
+div#header .menu ul li:hover { background-color: #4F76A3 }
 div#header .menu ul li ul { float: left; position: absolute; display: none; background: #ccc; }
 div#header .menu ul li:hover ul { display:block }
 div#header .menu ul li ul li { clear: both; padding: 3px; }

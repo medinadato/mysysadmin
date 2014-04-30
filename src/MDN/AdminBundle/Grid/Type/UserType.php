@@ -5,7 +5,7 @@ namespace MDN\AdminBundle\Grid\Type;
 use Symfony\Component\DependencyInjection\ContainerInterface as Container;
 
 use APY\DataGridBundle\Grid\Source\Entity;
-use APY\DataGridBundle\Grid\Source\Vector;
+
 use APY\DataGridBundle\Grid\Column\BlankColumn;
 use APY\DataGridBundle\Grid\Column\DateColumn;
 use APY\DataGridBundle\Grid\Column\TextColumn;
@@ -17,14 +17,15 @@ use APY\DataGridBundle\Grid\Export\XMLExport;
 use APY\DataGridBundle\Grid\Export\CSVExport;
 use APY\DataGridBundle\Grid\Export\JSONExport;
 
-class UserType 
+class UserType
 {
+
     /**
      *
      * @var \Symfony\Component\DependencyInjection\ContainerInterface
      */
     private $container;
-    
+
     /**
      * 
      * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
@@ -33,7 +34,7 @@ class UserType
     {
         $this->container = $container;
     }
-    
+
     /**
      * 
      * @return \APY\DataGridBundle\Grid\Grid
@@ -45,17 +46,30 @@ class UserType
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         /** @var \APY\DataGridBundle\Grid\Grid $grid */
         $grid = $this->container->get('grid');
-        
+
         // Creates simple grid based on your entity (ORM)
         $source = new Entity('MDNAdminBundle:User');
+
+        $tableAlias = $source->getTableAlias();
+
+        $source->manipulateQuery(function ($query) use ($tableAlias) {
+            /**
+             * @var Doctrine\ORM\QueryBuilder $query
+             */
+//            $query->addSelect('GROUP_CONCAT(r.name) AS role_name');
+//            $query->innerJoin($tableAlias . '.role', 'r');
+            $query->where($tableAlias . '.deletedAt IS NULL');
+//            $query->groupBy($tableAlias . '.userId');
+        });
+
         $grid->setSource($source);
 
         // Set the identifier of the grid
         $grid->setId('mdn_user');
-        
+
         // Persist state
         $grid->setPersistence(true);
-        
+
         // Exports
         $grid->addExport(new XMLExport('XML Export', 'xml_export'));
         $grid->addExport(new CSVExport('CSV Export', 'csv_export'));
@@ -70,22 +84,9 @@ class UserType
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         # Columns
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // Add a typed column with a rendering callback
-        $statusColumn = new TextColumn(array(
-                    'id' => 'status',
-                    'title' => 'Status',
-                    'sortable' => false,
-                    'filterable' => true,
-                    'source' => false,
-                ));
-        $statusColumn->manipulateRenderCell(function($value, $row, $router) {
-                    return (empty($row->getField('deletedAt'))) ? 'Active' : 'Inactive';
-                });
-        $grid->addColumn($statusColumn);
-
         // Show/Hide columns
-        $grid->setVisibleColumns(array('userId', 'username', 'createdAt', 'status'));
-        
+        $grid->setVisibleColumns(array('userId', 'username', 'createdAt'));
+
         // Set Default order
         $grid->setDefaultOrder('userId', 'asc');
 
@@ -97,33 +98,22 @@ class UserType
         $editRowAction->setRouteParameters(array('userId'));
         $editRowAction->setRouteParametersMapping(array('userId' => 'id'));
         $grid->addRowAction($editRowAction);
-        
+
         // DELETE
-        $deleteRowAction = new RowAction('Delete', 'mdn_admin_user_delete', false, '_self');
+        $deleteRowAction = new RowAction('Delete', 'mdn_admin_user_delete', true, '_self');
         $deleteRowAction->setRouteParameters(array('userId'));
         $deleteRowAction->setRouteParametersMapping(array('userId' => 'id'));
-        $deleteRowAction->manipulateRender(
-            function ($action, $row)
-            {
-                if (!empty($row->getField('deletedAt'))) {
-                    return NULL;
-                }
 
-                return $action;
+        $deleteRowAction->manipulateRender(function ($action, $row) {
+            if (!empty($row->getField('deletedAt'))) {
+                return NULL;
             }
-        );
+
+            return $action;
+        });
+
         $grid->addRowAction($deleteRowAction);
 
-        // Set default filters
-        // Set prefix titles
-        // Add mass actions
-        // Add row actions
-        // Manipulate the query builder
-        // Manipulate rows data
-        // Manipulate columns
-        // Manipulate column render cell
-        // Set items per page selector
-      
         return $grid;
     }
 
