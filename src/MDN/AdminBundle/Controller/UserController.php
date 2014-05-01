@@ -29,7 +29,7 @@ class UserController extends Controller
                         array('path' => 'mdn_admin_user_create', 'title' => 'Add New',),
                     ),
                 ))
-                ->renderTemplateParams();
+                ->getTemplateParams();
 
         return $grid->getGridResponse($data);
     }
@@ -96,7 +96,7 @@ class UserController extends Controller
         ));
 
         // view return
-        return $this->renderTemplateParams(array(
+        return $this->getTemplateParams(array(
                     'userForm' => $form->createView(),
         ));
     }

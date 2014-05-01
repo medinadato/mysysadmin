@@ -74,7 +74,7 @@
                     <div class="content-shortcuts">
                         <ul>
                             {% for shortcut in template_shortcuts %}
-                            <li><a href="{{ shortcut['path'] }}">{{ shortcut['title'] }}</a></li>
+                            <li><a href="{{ path(shortcut['path']) }}">{{ shortcut['title'] }}</a></li>
                             {% endfor %}
                         </ul>
                     </div>

@@ -30,36 +30,24 @@ class Controller extends SymfonyController implements TokenAuthenticatedControll
     private $template_params = array();
     
     /**
+     * 
+     * @param string $key
+     * @param mixed $value
+     * @return \MDN\AdminBundle\Controller
+     */
+    protected function setTemplateParam($key, $value) {
+        $this->template_params[$key] = $value;
+        
+        return $this;
+    }
+    
+    /**
      * Set parameters to be used by the default layout
      */
     protected function setTemplateParams($data = array())
-    {
-        // data structure
-        $variables = array(
-            'title'     => null,
-            'shortcuts' => array(
-                array(
-                    'path'  => null,
-                    'title' => null,
-                )),
-        );
-        
-        foreach($variables as $key => $value) {
-            
-            if(!isset($data[$key]) || empty($data[$key])) {
-                continue 1;
-            }
-            
-            // if there is a method to test values
-            $method = 'setTemplate'.ucfirst(strtolower($key));
-            if(method_exists($this, $method)) {
-                if(!$data[$key] = $this->$method($data[$key])) {
-                    continue 1;
-                }
-            }
-
-            $this->template_params['template_' . $key] = $data[$key];
-            
+    {        
+        foreach($data as $key => $value) {
+            $this->setTemplateParam($key, $value);
         }
         
         return $this;
@@ -98,10 +86,10 @@ class Controller extends SymfonyController implements TokenAuthenticatedControll
 
     /**
      * 
-     * @param array $extra_params
-     * @return array
+     * @param array $extra_params Extra params to be send to the view
+     * @return array Array of params 
      */
-    protected function renderTemplateParams($extra_params = array())
+    protected function getTemplateParams($extra_params = array())
     {
         return array_merge($this->template_params, $extra_params);
     }
