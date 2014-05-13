@@ -5,6 +5,7 @@ namespace MDN\AdminBundle\Controller;
 use MDN\AdminBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use MDN\AdminBundle\Entity\Role as RoleEntity;
 
 /**
  * 
@@ -41,7 +42,7 @@ class RoleController extends Controller
      * @param array $params
      * @return boolean
      */
-    private function processRoleForm($role = NULL, array $params = array())
+    private function processRoleForm(RoleEntity $role, array $params = array())
     {
         /**
          * @var \Symfony\Component\Form\Form $form
@@ -51,25 +52,22 @@ class RoleController extends Controller
         // add form into the view
         $this->setTemplateParams(array('roleForm' => $form->createView(),));
 
-        if ('POST' !== $this->getRequest()->getMethod()) {
-            return false;
+        if ('POST' === $this->getRequest()->getMethod()) {
+
+            $form->handleRequest($this->getRequest());
+
+            if ($form->isValid()) {
+
+                if ($role->getId() === NULL) {
+                    $this->getDoctrine()->getManager()->merge($role);
+                }
+
+                $this->getDoctrine()->getManager()->flush();
+
+                $this->get('session')->getFlashBag()->add('success', 'The changes have been saved.');
+            }
         }
 
-        $form->handleRequest($this->getRequest());
-
-        if (!$form->isValid()) {
-            return false;
-        }
-
-        if ($role === NULL) {
-            $role = $form->getData();
-            $this->getDoctrine()->getManager()->merge($role);
-        }
-
-        $this->getDoctrine()->getManager()->flush();
-
-        $this->get('session')->getFlashBag()->add('success', 'The changes have been saved.');
-        
         // update form into the view
         $this->setTemplateParams(array('roleForm' => $form->createView(),));
 
@@ -94,7 +92,7 @@ class RoleController extends Controller
             ),
         ));
 
-        $this->processRoleForm(null, array(
+        $this->processRoleForm(new RoleEntity(), array(
             'action' => $this->generateUrl('mdn_admin_role_create'),
         ));
 
@@ -129,6 +127,7 @@ class RoleController extends Controller
 
         if ($role === NULL) {
             throw new \RuntimeException('Role not found.');
+            // return new Response('Role not found.', 500);
         }
 
         $this->processRoleForm($role, array(

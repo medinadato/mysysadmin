@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table(name="user")
  * @ORM\Entity
- * 
+ * @Assert\GroupSequence({"User", "Strict"})
  */
 class User implements AdvancedUserInterface
 {
@@ -43,6 +43,10 @@ class User implements AdvancedUserInterface
      *
      * @ORM\Column(name="password", type="string", length=255, nullable=false)
      * @Assert\NotBlank()
+     * @Assert\Length(
+     *      min = "6",
+     *      max = "255"
+     * )
      */
     private $password;
 
@@ -99,6 +103,18 @@ class User implements AdvancedUserInterface
         return $this->userId;
     }
     
+    /**
+     * 
+     * @param type $userId
+     * @return \MDN\AdminBundle\Entity\User
+     */
+    public function setUserId($userId)
+    {
+        $this->userId = $userId;
+        
+        return $this;
+    }
+        
     /**
      * Get userId
      *
@@ -324,5 +340,13 @@ class User implements AdvancedUserInterface
     public function isEnabled()
     {
         return ($this->deletedAt === NULL);
+    }
+    
+    /**
+     * @Assert\True(message="The password cannot match your username", groups={"Strict"})
+     */
+    public function isPasswordLegal()
+    {
+        return ($this->username !== $this->password);
     }
 }

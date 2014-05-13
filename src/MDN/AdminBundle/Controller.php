@@ -45,11 +45,21 @@ class Controller extends SymfonyController implements TokenAuthenticatedControll
      * Set parameters to be used by the default layout
      */
     protected function setTemplateParams($data = array())
-    {        
+    {
+//        // data structure
+//        $variables = array(
+//            'title'     => null,
+//            'shortcuts' => array(
+//                array(
+//                    'path'  => null,
+//                    'title' => null,
+//                )),
+//        );
+        
         foreach($data as $key => $value) {
             $this->setTemplateParam($key, $value);
         }
-        
+                
         return $this;
     }
     

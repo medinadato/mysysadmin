@@ -15,6 +15,9 @@ use APY\DataGridBundle\Grid\Export\XMLExport;
 use APY\DataGridBundle\Grid\Export\CSVExport;
 use APY\DataGridBundle\Grid\Export\JSONExport;
 
+/**
+ * 
+ */
 class RoleType
 {
 
@@ -47,7 +50,7 @@ class RoleType
 
         // runs the search
         $qb = $this->container->get('doctrine')->getManager()->createQueryBuilder();
-        $rs = $qb->select('r.roleId, r.code, r.createdAt')
+        $rs = $qb->select('r.roleId, r.code, r.name, r.createdAt, r.deletedAt')
                 ->addSelect("COUNT(u) number_users")
                 ->from('MDNAdminBundle:Role', 'r')
                 ->leftJoin('r.user', 'u')
@@ -75,6 +78,9 @@ class RoleType
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         # Columns
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // Show/Hide columns
+        $grid->setVisibleColumns(array('roleId', 'code', 'name', 'createdAt', 'number_users', 'enabled'));
+        
         // Add a typed column with a rendering callback (status)
         $enabledColumn = new TextColumn(array(
             'id' => 'enabled',
@@ -92,13 +98,18 @@ class RoleType
         // customizes columns
         $grid->getColumn('roleId')
                 ->setTitle('id');
+        $grid->getColumn('code')
+                ->setTitle('Code');
+        $grid->getColumn('name')
+                ->setTitle('Display Name');
         $grid->getColumn('createdAt')
-                ->setTitle('created at');
+                ->setTitle('Created At');
         $grid->getColumn('number_users')
                 ->setTitle('Number of Users');
 
         // Set Default order
         $grid->setDefaultOrder('roleId', 'asc');
+        
 
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         # Row actions

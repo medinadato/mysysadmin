@@ -38,7 +38,7 @@ class RoleType extends AbstractType
                     'empty_data'  => null,
                 ))
                 ->add('saveAndAdd', 'submit', array(
-                    'attr' => array('formnovalidate' => 'formnovalidate'),
+//                    'attr' => array('formnovalidate' => 'formnovalidate'),
         ));
     }
 

@@ -25,3 +25,4 @@ div.flashMessages .flash-success { background-color: #99ff99 }
 div.flashMessages .flash-error { background-color: #CC0000; }
 table { width: 100%; border: 1px solid #000; }
 table td { border: 1px solid #ccc; }
+div.footer { float: left; display: block; width: 100%; }

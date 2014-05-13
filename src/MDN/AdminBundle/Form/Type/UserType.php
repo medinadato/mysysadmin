@@ -17,35 +17,33 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->setMethod('post')
+                ->setAttributes(array('class' => 'myform'))
                 ->add('userId', 'hidden')
-                ->add('username', 'email', array('attr' => array(
-//                        'maxlength' => 255,
-//                        'required' => true,
-                    )
+                ->add('username', 'email', array(
+                    'attr' => array("autocomplete" => "off",),
                 ))
-//                ->add('password', 'password', array('attr' => array(
-////                        'maxlength' => 255,
-////                        'required' => true,
-//                    )
-//                ))
-                ->add('password', 'repeated', array('attr' => array(
-                        'type' => 'password',
-                        'invalid_message' => 'The password fields must match.',
-                        'first_options'  => array('label' => 'Password'),
-                        'second_options' => array('label' => 'Repeat Password'),
-                    )
-                ))
-                ->add('enabled', 'choice', array(
-                    'label' => 'Enabled',
-                    'choices' => array(
-                        'Y' => 'Yes',
-                        'N' => 'No',
+                ->add('password', 'repeated', array(
+                    'type' => 'password',
+                    'options' => array(
+                        'attr' => array(
+                            'class' => 'password-field',
+                            'min' => 6,
+                            'max' => 255,
+                        ),
                     ),
-//                    'required'    => true,
-                    'empty_data' => null,
+                    'required' => true,
+                    'invalid_message' => 'The password fields must match.',
+                    'first_options' => array('label' => 'Password'),
+                    'second_options' => array('label' => 'Repeat Password'),
+                ))
+                ->add('role', 'entity', array(
+                    'class' => 'MDNAdminBundle:Role',
+                    'query_builder' => function($repository) { return $repository->createQueryBuilder('r')->where('r.deletedAt IS NULL')->orderBy('r.roleId', 'ASC'); },
+                    'property' => 'name',
+                    'multiple' => true,
                 ))
                 ->add('saveAndAdd', 'submit', array(
-                    'attr' => array('formnovalidate' => 'formnovalidate'),
+//                    'attr' => array('formnovalidate' => 'formnovalidate'),
         ));
     }
 
@@ -57,6 +55,7 @@ class UserType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'MDN\AdminBundle\Entity\User',
+//            'inherit_data' => true,
         ));
     }
 

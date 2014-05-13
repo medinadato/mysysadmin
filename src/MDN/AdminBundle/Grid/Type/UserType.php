@@ -4,7 +4,7 @@ namespace MDN\AdminBundle\Grid\Type;
 
 use Symfony\Component\DependencyInjection\ContainerInterface as Container;
 
-use APY\DataGridBundle\Grid\Source\Entity;
+use APY\DataGridBundle\Grid\Source\Vector;
 
 use APY\DataGridBundle\Grid\Column\BlankColumn;
 use APY\DataGridBundle\Grid\Column\DateColumn;
@@ -47,20 +47,19 @@ class UserType
         /** @var \APY\DataGridBundle\Grid\Grid $grid */
         $grid = $this->container->get('grid');
 
-        // Creates simple grid based on your entity (ORM)
-        $source = new Entity('MDNAdminBundle:User');
-
-        $tableAlias = $source->getTableAlias();
-
-        $source->manipulateQuery(function ($query) use ($tableAlias) {
-            /**
-             * @var Doctrine\ORM\QueryBuilder $query
-             */
-//            $query->addSelect('GROUP_CONCAT(r.name) AS role_name');
-//            $query->innerJoin($tableAlias . '.role', 'r');
-            $query->where($tableAlias . '.deletedAt IS NULL');
-//            $query->groupBy($tableAlias . '.userId');
-        });
+        /** @var Doctrine\ORM\QueryBuilder $query_builder */
+        $query_builder = $this->container->get('doctrine')->getManager()->createQueryBuilder();
+        $rs = $query_builder->select('u.userId, u.username, u.createdAt')
+                ->addSelect("COUNT(r) number_roles")
+                ->from('MDNAdminBundle:User', 'u')
+                ->leftJoin('u.role', 'r')
+                ->where('u.deletedAt IS NULL')
+                ->groupBy('u.userId')
+                ->getQuery()
+                ->getResult();
+                
+        // source
+        $source = new Vector($rs);
 
         $grid->setSource($source);
 
@@ -85,10 +84,20 @@ class UserType
         # Columns
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // Show/Hide columns
-        $grid->setVisibleColumns(array('userId', 'username', 'createdAt'));
+        $grid->setVisibleColumns(array('userId', 'username', 'createdAt', 'number_roles'));
 
         // Set Default order
         $grid->setDefaultOrder('userId', 'asc');
+        
+        // customizes columns
+        $grid->getColumn('userId')
+                ->setTitle('Id');
+        $grid->getColumn('username')
+                ->setTitle('Username');
+        $grid->getColumn('createdAt')
+                ->setTitle('Created At');
+        $grid->getColumn('number_roles')
+                ->setTitle('Number of Roles');
 
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         # Row actions
@@ -113,6 +122,7 @@ class UserType
         });
 
         $grid->addRowAction($deleteRowAction);
+        
 
         return $grid;
     }

@@ -83,5 +83,10 @@ URL:  [http://local.mysysadmin.com/admin](http://local.mysysadmin.com/admin)
 USER: admin[at]mdnsolutions.com
 PASS: 123456
 
+# Extra libraries' documentations
+
+[APYGridBundle](https://github.com/Abhoryo/APYDataGridBundle/blob/master/Resources/doc/summary.md)
+
+
 # More at:
 [http://blog.mdnsolutions.com](http://blog.mdnsolutions.com)

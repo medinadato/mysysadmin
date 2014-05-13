@@ -26,6 +26,11 @@ class Role
      * @var string
      *
      * @ORM\Column(name="code", type="string", length=255, nullable=false)
+     * @Assert\Regex(
+     *      pattern = "/[^a-z_\-0-9]/i",
+     *      match = false,
+     *      message = "Code must contain only letters, underscore or numbers"
+     * )
      * @Assert\NotBlank()
      * @Assert\Length(
      *      min = "5",
@@ -101,6 +106,16 @@ class Role
     {
         return $this->roleId;
     }
+    
+    /**
+     * Alias Get roleId
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->getRoleId();
+    }
 
     /**
      * Set code
@@ -110,7 +125,7 @@ class Role
      */
     public function setCode($code)
     {
-        $this->code = $code;
+        $this->code = strtoupper($code);
     
         return $this;
     }
@@ -198,7 +213,7 @@ class Role
      */
     public function isEnabled()
     {
-        return ($this->deletedAt === NULL);
+        return ($this->deletedAt === NULL) ? 'Y' : 'N';
     }
     
     /**

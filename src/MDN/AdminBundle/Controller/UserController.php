@@ -4,8 +4,8 @@ namespace MDN\AdminBundle\Controller;
 
 use MDN\AdminBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use MDN\AdminBundle\Entity\User as UserEntity;
 
 /**
  * 
@@ -23,82 +23,118 @@ class UserController extends Controller
 
         $grid = $this->get('mdn_admin.grid.type.user')->build();
 
-        $data = $this->setTemplateParams(array(
-                    'title' => 'User Edit',
-                    'shortcuts' => array(
-                        array('path' => 'mdn_admin_user_create', 'title' => 'Add New',),
-                    ),
-                ))
-                ->getTemplateParams();
+        $this->setTemplateParams(array(
+            'template_title' => 'User List',
+            'template_shortcuts' => array(
+                array(
+                    'path' => 'mdn_admin_user_create',
+                    'title' => 'Add New',
+                ),
+            ),
+        ));
 
-        return $grid->getGridResponse($data);
+        return $grid->getGridResponse($this->getTemplateParams());
     }
 
     /**
      * 
-     * @param type $form
+     * @param \MDN\AdminBundle\Entity\User $user
+     * @param array $params
      * @return boolean
      */
-    private function processForm(\Symfony\Component\Form\Form $form)
+    private function processUserForm(UserEntity $user, array $params = array())
     {
-        $request = $this->getRequest();
+        /**
+         * @var \Symfony\Component\Form\Form $form
+         */
+        $form = $this->createForm('user', $user, $params);
 
-        if ('POST' !== $request->getMethod()) {
-            return false;
+        // add form into the view
+        $this->setTemplateParams(array('userForm' => $form->createView(),));
+
+        if ('POST' === $this->getRequest()->getMethod()) {
+
+            $form->handleRequest($this->getRequest());
+
+            if ($form->isValid()) {
+
+                if ($user->getId() === NULL) {
+                    $this->getDoctrine()->getManager()->merge($user);
+                }
+
+                $this->getDoctrine()->getManager()->flush();
+
+                $this->get('session')->getFlashBag()->add('success', 'The changes have been saved.');
+            }
         }
 
-        $form->handleRequest($request);
-
-        if (!$form->isValid()) {
-            return false;
-        }
-
-        $userEntity = $form->getData();
-
-        $em = $this->getDoctrine()->getManager();
-        $em->merge($userEntity);
-        $em->flush();
-
-        $this->get('session')->getFlashBag()->add('success', 'The changes have been saved.');
+        // update form into the view
+        $this->setTemplateParams(array('userForm' => $form->createView(),));
 
         return true;
     }
 
     /**
      * 
-     * @param \Symfony\Component\HttpFoundation\Request $request
      * @return array
      * @Template("MDNAdminBundle:User:update.html.twig")
      */
-    public function createAction(Request $request)
+    public function createAction()
     {
-        try {
-
-            $form = $this->createForm('user', null, array(
-                'action' => $this->generateUrl('mdn_admin_user_create'),
-            ));
-
-            if ($this->processForm($form)) {
-                return $this->redirect($this->generateUrl('mdn_admin_user_index'));
-            }
-        } catch (\RuntimeException $e) {
-
-            $this->get('session')->getFlashBag()->add('error', $e->getMessage());
-        }
-
-        // template
+        // view template
         $this->setTemplateParams(array(
-            'title' => 'User Add New',
-            'shortcuts' => array(
-                'path' => 'mdn_admin_user_index',
-                'title' => 'List',
+            'template_title' => 'User Add New',
+            'template_shortcuts' => array(
+                array(
+                    'path' => 'mdn_admin_user_index',
+                    'title' => 'List',
+                ),
             ),
         ));
 
-        // view return
-        return $this->getTemplateParams(array(
-                    'userForm' => $form->createView(),
+        $this->processUserForm(new UserEntity(), array(
+            'action' => $this->generateUrl('mdn_admin_user_create'),
         ));
+
+        return $this->getTemplateParams();
+    }
+
+    /**
+     * 
+     * @param int $id
+     * @return array
+     * @throws NotFoundHttpException
+     * @Template("MDNAdminBundle:User:update.html.twig")
+     */
+    public function updateAction($id)
+    {
+        // view template
+        $this->setTemplateParams(array(
+            'template_title' => 'User Edit',
+            'template_shortcuts' => array(
+                array(
+                    'path' => 'mdn_admin_user_index',
+                    'title' => 'List',
+                ),
+                array(
+                    'path' => 'mdn_admin_user_create',
+                    'title' => 'Add New',
+                ),
+            ),
+        ));
+
+        $user = $this->getRepository('MDNAdminBundle:User')->find($id);
+
+        if ($user === NULL) {
+            throw new \RuntimeException('User not found.');
+            // return new Response('User not found.', 500);
+        }
+
+        $this->processUserForm($user, array(
+            'action' => $this->generateUrl('mdn_admin_user_update', array('id' => $id,)),
+        ));
+
+        return $this->getTemplateParams();
     }
 
     /**
@@ -113,14 +149,14 @@ class UserController extends Controller
         try {
             $em = $this->getDoctrine()->getManager();
 
-            $roleRepo = $em->getRepository('MDNAdminBundle:User');
-            $role = $roleRepo->find($id);
+            $userRepo = $em->getRepository('MDNAdminBundle:User');
+            $user = $userRepo->find($id);
 
-            if (!isset($role)) {
-                throw new RuntimeException('User not found.');
+            if (!isset($user)) {
+                throw new \RuntimeException('User not found.');
             }
 
-            $role->setDeletedAt(new \Datetime());
+            $user->setDeletedAt(new \Datetime());
             $em->flush();
 
             $this->get('session')->getFlashBag()->add('success', 'Record removed with success');
