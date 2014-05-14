@@ -33,6 +33,7 @@ security:
 
     access_control:
         - { path: ^/admin/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/admin/, roles: ROLE_ADMIN }
-        #- { path: ^/admin/tag/(edit|add|delete)/(\d+), roles: ROLE_USER, methods: DELETE,PUT,POST }
+#        - { path: ^/admin/, roles: ROLE_ADMIN }
+        - { path: ^/admin/user/(edit|create|delete|update)/(\d+), roles: ROLE_ADMIN, methods: 'DELETE,PUT,POST' }
+        - { path: ^/admin/role/(edit|create|delete|update)/(\d+), roles: ROLE_USER, methods: 'DELETE,PUT,POST' }
         #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }

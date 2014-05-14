@@ -13,6 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="user")
  * @ORM\Entity
  * @Assert\GroupSequence({"User", "Strict"})
+ * @ORM\EntityListeners({ "MDN\AdminBundle\Entity\Listener\UserListener" }) 
  */
 class User implements AdvancedUserInterface
 {
@@ -134,7 +135,6 @@ class User implements AdvancedUserInterface
     public function setUsername($username)
     {
         $this->username = $username;
-    
         return $this;
     }
 
@@ -156,6 +156,7 @@ class User implements AdvancedUserInterface
      */
     public function setPassword($password)
     {
+        echo "porra";
         $this->password = $password;
     
         return $this;

@@ -10,8 +10,23 @@ services:
 #        class: %mdn_admin.example.class%
 #        arguments: [@service_id, "plain_value", %parameter%]
 
-    admin.tokens.action_listener:
-        class: MDN\AdminBundle\EventListener\TokenListener
-        arguments: ["%tokens%"]
-        tags:
-            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
+#    admin.tokens.action_listener:
+#        class: MDN\AdminBundle\EventListener\TokenListener
+#        arguments: ["%tokens%"]
+#        tags:
+#            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
+
+#    mdn_admin.doctrine.entity_listener_resolver:
+#        class: MDN\AdminBundle\EventListener\UserListener
+#        arguments: [ "@service_container" ]
+#        tags:
+#            - { name: doctrine.event_user, connection: default }
+
+
+
+#    mdn_admin.entity_listener_resolver:
+#        class: MDN\AdminBundle\Doctrine\EntityListenerResolver
+#        arguments: [ "@service_container" ]
+#        tags:
+#            -  { name: doctrine.entity_listener }
+            
