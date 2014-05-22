@@ -65,6 +65,9 @@ Tip: Don't forget to create the database/user prior to import the tables:
 You might or might not need to run
 
     $ sudo chmod -R 744 .
+    
+You also might or might not need to run:
+    $ sudo chmod 666 /var/run/php5-fpm.sock
 
 # Application
 

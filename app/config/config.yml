@@ -19,6 +19,11 @@ framework:
     trusted_proxies: ~
     session:         ~
     fragments:       ~
+    session:
+        cookie_lifetime: 0
+        save_path: "%kernel.root_dir%/Sessions/"
+        cookie_httponly: false
+       # save_path: ~
 
 # Twig Configuration
 twig:
@@ -80,3 +85,4 @@ swiftmailer:
 parameters:
     tokens:
         client1: pass1
+        
