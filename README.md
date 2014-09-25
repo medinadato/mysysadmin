@@ -51,7 +51,7 @@ Tip: Don't forget to create the database/user prior to import the tables:
 
 Database structure
 
-	ATTENTION: This operation should not be executed in a production environment
+> ATTENTION: This operation should not be executed in a production environment
 
     $ php app/console doctrine:database:create --env=dev
     $ php app/console doctrine:schema:create --env=dev --em=default
