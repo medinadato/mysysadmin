@@ -67,3 +67,9 @@ mdn_admin_user_delete:
     methods:  [GET]
     requirements:
         id: "\d+"
+        
+# server
+mdn_admin_server_index:
+    pattern:  /admin/server/
+    defaults: { _controller: MDNAdminBundle:Server:index }
+    methods:  [GET,POST]

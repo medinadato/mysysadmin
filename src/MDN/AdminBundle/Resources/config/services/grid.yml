@@ -6,3 +6,7 @@ services:
     mdn_admin.grid.type.role:
         class: MDN\AdminBundle\Grid\Type\RoleType
         arguments: ['@service_container']
+        
+    mdn_admin.grid.type.server:
+        class: MDN\AdminBundle\Grid\Type\ServerType
+        arguments: ['@service_container']

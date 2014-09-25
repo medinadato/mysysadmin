@@ -86,6 +86,42 @@ URL:  [http://local.mysysadmin.com/admin](http://local.mysysadmin.com/admin)
 USER: admin[at]mdnsolutions.com
 PASS: 123456
 
+
+
+# Creating a CRUD
+
+This section I show an example of how to create your own custom CRUD module.
+In our case it's a new CRUD for the table Server in our MDN\AdminBundle.
+
+## Database Table
+
+Create your database table (e.g.: Server).
+
+### Mapping and Entities
+
+In order to map your entities into the application, run in your command line:
+
+    $ php app/console doctrine:mapping:import --em=default --filter='Server' MDNAdminBundle yml
+
+Then create the entity class file by:
+
+    $ php app/console doctrine:mapping:convert annotation ./src --em=default --filter='Server'
+
+By now you should be able to see the new file MDN\AdminBundle\Entity\Server.php created.
+
+You can also delete the files on the directory src/MDN/AdminBundle/Resources/config/doctrine/.
+
+## Controller
+
+Create your controller in src/MDN/AdminBundle/Controller/ServerController.php
+This step includes creating the view as well.
+
+### Grid
+
+You might use the grid module available. To do so, register your grid as a service and load it 
+in your controller src/MDN/AdminBundle/Resources/config/services/grid.yml.
+
+
 # Extra libraries' documentations
 
 [APYGridBundle](https://github.com/Abhoryo/APYDataGridBundle/blob/master/Resources/doc/summary.md)

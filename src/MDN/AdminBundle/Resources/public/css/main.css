@@ -10,6 +10,7 @@ div#header #top { float: left; display: block; width: 100%; text-align: right; }
 div#header #top a { padding: 10px; }
 div#header #top a.logo { float: left; }
 div#header .menu { float: left; clear: both; display: block; width: 100%; margin: 15px 0; background-color: #E6EDF5; padding: 5px 0; text-indent: 5px; }
+div#header .menu ul li a { text-decoration: none; }
 div#header .menu ul { padding: 0; margin: 0; }
 div#header .menu ul li { float: left; display: inline-block; margin-right: 50px; }
 div#header .menu ul li:hover { background-color: #4F76A3 }
