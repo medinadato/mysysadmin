@@ -10,8 +10,6 @@ services:
 #        class: %mdn_admin.example.class%
 #        arguments: [@service_id, "plain_value", %parameter%]
 
-    admin.tokens.action_listener:
-        class: MDN\AdminBundle\EventListener\TokenListener
-        arguments: ["%tokens%"]
-        tags:
-            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
+    mdn_admin.user_manager:
+        class: MDN\AdminBundle\Service\UserManager
+        arguments: ['@service_container']

@@ -8,3 +8,4 @@ app/bootstrap.php.cache
 *.php~
 .DS_Store
 /nbproject/private/
+app/Sessions/*

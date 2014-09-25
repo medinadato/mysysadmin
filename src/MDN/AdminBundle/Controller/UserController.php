@@ -61,6 +61,9 @@ class UserController extends Controller
                 if ($user->getId() === NULL) {
                     $this->getDoctrine()->getManager()->merge($user);
                 }
+                
+                // encrypt password
+                $this->get('mdn_admin.user_manager')->setUserPassword($user, $form->get('password')->getData());
 
                 $this->getDoctrine()->getManager()->flush();
 
