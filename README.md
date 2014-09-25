@@ -49,14 +49,14 @@ Tip: Don't forget to create the database/user prior to import the tables:
 
 ### Via Symfony Console
 
-1. Database structure
+Database structure
 
 	ATTENTION: This operation should not be executed in a production environment
 
     $ php app/console doctrine:database:create --env=dev
     $ php app/console doctrine:schema:create --env=dev --em=default
 
-2. Initial data
+### Authentication data
 
     $ php app/console doctrine:fixtures:load --env=dev --no-interaction
 
