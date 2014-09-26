@@ -7,6 +7,7 @@ use APY\DataGridBundle\Grid\Source\Vector;
 use APY\DataGridBundle\Grid\Column\BlankColumn;
 use APY\DataGridBundle\Grid\Column\DateColumn;
 use APY\DataGridBundle\Grid\Column\TextColumn;
+use APY\DataGridBundle\Grid\Column\NumberColumn;
 use APY\DataGridBundle\Grid\Column\ActionsColumn;
 use APY\DataGridBundle\Grid\Action\MassAction;
 use APY\DataGridBundle\Grid\Action\DeleteMassAction;
@@ -58,8 +59,37 @@ class ServerType
                 ->getQuery()
                 ->getResult();
 
+        $columns = array(
+            new NumberColumn(array(
+                'id' => 'serverId',
+                'field' => 'serverId',
+                'filterable' => true,
+                'source' => true,
+                'title' => 'Id',
+                    )),
+            new TextColumn(array(
+                'id' => 'name',
+                'field' => 'name',
+                'source' => true,
+                'title' => 'Server Name',
+                    )),
+            new NumberColumn(array(
+                'id' => 'ip',
+                'field' => 'ip',
+                'filterable' => true,
+                'source' => true,
+                'title' => 'IP Address',
+                    )),
+            new DateColumn(array(
+                'id' => 'createdAt',
+                'field' => 'createdAt',
+                'source' => true,
+                'title' => 'Created At',
+                    )),
+        );
+
         // source
-        $source = new Vector($rs);
+        $source = new Vector($rs, $columns);
 
         // set it
         $grid->setSource($source);
@@ -75,48 +105,18 @@ class ServerType
         $grid->addExport(new CSVExport('CSV Export', 'csv_export'));
         $grid->addExport(new JSONExport('JSON Export', 'json_export'));
 
-        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        # Columns
-        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // Show/Hide columns
-//        $grid->setVisibleColumns(array('roleId', 'code', 'name', 'createdAt', 'number_users', 'enabled'));
-//        
-//        // Add a typed column with a rendering callback (status)
-//        $enabledColumn = new TextColumn(array(
-//            'id' => 'enabled',
-//            'title' => 'Enabled',
-//            'sortable' => false,
-//            'filterable' => true,
-//            'source' => false,
-//        ));
-//
-//        $enabledColumn->manipulateRenderCell(function($value, $row, $router) {
-//            return (empty($row->getField('deletedAt'))) ? 'Yes' : 'No';
-//        });
-//        $grid->addColumn($enabledColumn);
-
-        // customizes columns
-        $grid->getColumn('serverId')
-                ->setTitle('id');
-        $grid->getColumn('name')
-                ->setTitle('Name');
-        $grid->getColumn('ip')
-                ->setTitle('Ip');
-        $grid->getColumn('createdAt')
-                ->setTitle('Created At');
-
         // Set Default order
         $grid->setDefaultOrder('serverId', 'asc');
-        
+
 
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         # Row actions
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // Edit
-//        $editRowAction = new RowAction('Edit', 'mdn_admin_server_update', false, '_self');
-//        $editRowAction->setRouteParameters(array('roleId'));
-//        $editRowAction->setRouteParametersMapping(array('roleId' => 'id'));
-//        $grid->addRowAction($editRowAction);
+        $editRowAction = new RowAction('Edit', 'mdn_admin_server_index', false, '_self');
+        $editRowAction->setRouteParameters(array('serverId'));
+        $editRowAction->setRouteParametersMapping(array('serverId' => 'id'));
+        $grid->addRowAction($editRowAction);
 
         return $grid;
     }
