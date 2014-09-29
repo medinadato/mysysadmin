@@ -16,11 +16,11 @@ class UserManager
 
     /**
      * 
-     * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
+     * @param \Symfony\Component\DependencyInjection\ContainerInterface $encoderFactory
      */
-    public function __construct(Container $container)
+    public function __construct(Container $encoderFactory)
     {
-        $this->encoderFactory = $container->get('security.encoder_factory');
+        $this->encoderFactory = $encoderFactory;
     }
    
 

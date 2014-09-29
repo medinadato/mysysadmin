@@ -12,4 +12,4 @@ services:
 
     mdn_admin.user_manager:
         class: MDN\AdminBundle\Service\UserManager
-        arguments: ['@service_container']
+        arguments: ['@security.encoder_factory']
