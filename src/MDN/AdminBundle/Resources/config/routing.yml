@@ -73,3 +73,23 @@ mdn_admin_server_index:
     pattern:  /admin/server/
     defaults: { _controller: MDNAdminBundle:Server:index }
     methods:  [GET,POST]
+    
+    
+mdn_admin_server_create:
+    pattern:  /admin/server/create/
+    defaults: { _controller: MDNAdminBundle:Server:create }
+    methods:  [GET,POST]
+    
+mdn_admin_server_update:
+    pattern:  /admin/server/update/{id}
+    defaults: { _controller: MDNAdminBundle:Server:update }
+    methods:  [GET,POST]
+    requirements:
+        id: "\d+"
+    
+mdn_admin_server_delete:
+    pattern:  /admin/server/delete/{id}
+    defaults: { _controller: MDNAdminBundle:Server:delete }
+    methods:  [GET]
+    requirements:
+        id: "\d+"

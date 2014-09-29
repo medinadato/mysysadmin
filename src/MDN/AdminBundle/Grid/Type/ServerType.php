@@ -3,18 +3,10 @@
 namespace MDN\AdminBundle\Grid\Type;
 
 use Symfony\Component\DependencyInjection\ContainerInterface as Container;
-use APY\DataGridBundle\Grid\Source\Vector;
-use APY\DataGridBundle\Grid\Column\BlankColumn;
-use APY\DataGridBundle\Grid\Column\DateColumn;
-use APY\DataGridBundle\Grid\Column\TextColumn;
-use APY\DataGridBundle\Grid\Column\NumberColumn;
-use APY\DataGridBundle\Grid\Column\ActionsColumn;
-use APY\DataGridBundle\Grid\Action\MassAction;
-use APY\DataGridBundle\Grid\Action\DeleteMassAction;
-use APY\DataGridBundle\Grid\Action\RowAction;
-use APY\DataGridBundle\Grid\Export\XMLExport;
-use APY\DataGridBundle\Grid\Export\CSVExport;
-use APY\DataGridBundle\Grid\Export\JSONExport;
+use APY\DataGridBundle\Grid\Source;
+use APY\DataGridBundle\Grid\Column;
+use APY\DataGridBundle\Grid\Action;
+use APY\DataGridBundle\Grid\Export;
 
 /**
  * 
@@ -52,35 +44,32 @@ class ServerType
         // runs the search
         $qb = $this->container->get('doctrine')->getManager()->createQueryBuilder();
         $rs = $qb->select('s.serverId, s.name, s.ip, s.createdAt')
-//                ->addSelect("COUNT(u) number_users")
                 ->from('MDNAdminBundle:Server', 's')
-//                ->leftJoin('r.user', 'u')
-//                ->groupBy('r.roleId')
                 ->getQuery()
                 ->getResult();
 
         $columns = array(
-            new NumberColumn(array(
+            new Column\NumberColumn(array(
                 'id' => 'serverId',
                 'field' => 'serverId',
                 'filterable' => true,
                 'source' => true,
                 'title' => 'Id',
                     )),
-            new TextColumn(array(
+            new Column\TextColumn(array(
                 'id' => 'name',
                 'field' => 'name',
                 'source' => true,
                 'title' => 'Server Name',
                     )),
-            new NumberColumn(array(
+            new Column\TextColumn(array(
                 'id' => 'ip',
                 'field' => 'ip',
                 'filterable' => true,
                 'source' => true,
                 'title' => 'IP Address',
                     )),
-            new DateColumn(array(
+            new Column\DateColumn(array(
                 'id' => 'createdAt',
                 'field' => 'createdAt',
                 'source' => true,
@@ -89,10 +78,11 @@ class ServerType
         );
 
         // source
-        $source = new Vector($rs, $columns);
+        $source = new Source\Vector($rs, $columns);
 
         // set it
         $grid->setSource($source);
+        $grid->setNoDataMessage(false);
 
         // Set the identifier of the grid
         $grid->setId('mdn_server');
@@ -101,19 +91,18 @@ class ServerType
         $grid->setPersistence(true);
 
         // Exports
-        $grid->addExport(new XMLExport('XML Export', 'xml_export'));
-        $grid->addExport(new CSVExport('CSV Export', 'csv_export'));
-        $grid->addExport(new JSONExport('JSON Export', 'json_export'));
+        $grid->addExport(new Export\XMLExport('XML Export', 'xml_export'));
+        $grid->addExport(new Export\CSVExport('CSV Export', 'csv_export'));
+        $grid->addExport(new Export\JSONExport('JSON Export', 'json_export'));
 
         // Set Default order
         $grid->setDefaultOrder('serverId', 'asc');
-
 
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         # Row actions
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // Edit
-        $editRowAction = new RowAction('Edit', 'mdn_admin_server_index', false, '_self');
+        $editRowAction = new Action\RowAction('Edit', 'mdn_admin_server_update', false, '_self');
         $editRowAction->setRouteParameters(array('serverId'));
         $editRowAction->setRouteParametersMapping(array('serverId' => 'id'));
         $grid->addRowAction($editRowAction);

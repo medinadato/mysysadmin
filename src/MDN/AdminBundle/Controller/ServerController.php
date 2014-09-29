@@ -25,12 +25,12 @@ class ServerController extends Controller
 
         $this->setTemplateParams(array(
             'template_title' => 'Server List',
-//            'template_shortcuts' => array(
-//                array(
-//                    'path' => 'mdn_admin_server_create',
-//                    'title' => 'Add New',
-//                ),
-//            ),
+            'template_shortcuts' => array(
+                array(
+                    'path' => 'mdn_admin_server_create',
+                    'title' => 'Add New',
+                ),
+            ),
         ));
 
         return $grid->getGridResponse($this->getTemplateParams());
