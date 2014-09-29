@@ -1,0 +1,4 @@
+services:            
+    mdn_my_sys.grid.type.server:
+        class: MDN\MySysBundle\Grid\Type\ServerType
+        arguments: ['@service_container']

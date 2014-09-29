@@ -1,0 +1,25 @@
+# server
+mdn_my_sys_server_index:
+    pattern:  /admin/server/
+    defaults: { _controller: MDNMySysBundle:Server:index }
+    methods:  [GET,POST]
+    
+    
+mdn_my_sys_server_create:
+    pattern:  /admin/server/create/
+    defaults: { _controller: MDNMySysBundle:Server:create }
+    methods:  [GET,POST]
+    
+mdn_my_sys_server_update:
+    pattern:  /admin/server/update/{id}
+    defaults: { _controller: MDNMySysBundle:Server:update }
+    methods:  [GET,POST]
+    requirements:
+        id: "\d+"
+    
+mdn_my_sys_server_delete:
+    pattern:  /admin/server/delete/{id}
+    defaults: { _controller: MDNMySysBundle:Server:delete }
+    methods:  [GET]
+    requirements:
+        id: "\d+"

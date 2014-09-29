@@ -34,7 +34,7 @@ twig:
 assetic:
     debug:          %kernel.debug%
     use_controller: false
-    bundles:        [ "MDNAdminBundle" ]
+    bundles:        [ "MDNAdminBundle", "MDNMySysBundle" ]
     #java: /usr/bin/java
     filters:
         cssrewrite: ~
@@ -68,6 +68,7 @@ doctrine:
                 connection:   default
                 mappings:
                     MDNAdminBundle: ~
+                    MDNMySysBundle: ~
 
 
 # Swiftmailer Configuration

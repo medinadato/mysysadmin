@@ -99,7 +99,7 @@ class UserType
         # Mass Actions
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // delete mass action
-        $grid->addMassAction(new DeleteMassAction());
+        $grid->addMassAction(new Action\DeleteMassAction());
 
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         # Columns
@@ -111,7 +111,7 @@ class UserType
         # Row actions
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // Edit
-        $editRowAction = new RowAction('Edit', 'mdn_admin_user_update', false, '_self');
+        $editRowAction = new Action\RowAction('Edit', 'mdn_admin_user_update', false, '_self');
         $editRowAction->setRouteParameters(array('userId'));
         $editRowAction->setRouteParametersMapping(array('userId' => 'id'));
         $grid->addRowAction($editRowAction);

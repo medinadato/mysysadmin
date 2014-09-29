@@ -1,6 +1,6 @@
 <?php
 
-namespace MDN\AdminBundle\Entity;
+namespace MDN\MySysBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -57,7 +57,7 @@ class Server
     /**
      * 
      * @param string $name
-     * @return \MDN\AdminBundle\Entity\Server
+     * @return \MDN\MySysBundle\Entity\Server
      */
     function setName($name)
     {
@@ -74,7 +74,7 @@ class Server
     /**
      * 
      * @param string $ip
-     * @return \MDN\AdminBundle\Entity\Server
+     * @return \MDN\MySysBundle\Entity\Server
      */
     function setIp($ip)
     {

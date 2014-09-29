@@ -1,6 +1,6 @@
 <?php
 
-namespace MDN\AdminBundle\Grid\Type;
+namespace MDN\MySysBundle\Grid\Type;
 
 use Symfony\Component\DependencyInjection\ContainerInterface as Container;
 use APY\DataGridBundle\Grid\Source;
@@ -44,7 +44,7 @@ class ServerType
         // runs the search
         $qb = $this->container->get('doctrine')->getManager()->createQueryBuilder();
         $rs = $qb->select('s.serverId, s.name, s.ip, s.createdAt')
-                ->from('MDNAdminBundle:Server', 's')
+                ->from('MDNMySysBundle:Server', 's')
                 ->getQuery()
                 ->getResult();
 
@@ -102,7 +102,7 @@ class ServerType
         # Row actions
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // Edit
-        $editRowAction = new Action\RowAction('Edit', 'mdn_admin_server_update', false, '_self');
+        $editRowAction = new Action\RowAction('Edit', 'mdn_my_sys_server_update', false, '_self');
         $editRowAction->setRouteParameters(array('serverId'));
         $editRowAction->setRouteParametersMapping(array('serverId' => 'id'));
         $grid->addRowAction($editRowAction);
