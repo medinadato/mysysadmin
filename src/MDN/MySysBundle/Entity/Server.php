@@ -108,5 +108,13 @@ class Server
     {
         return $this->createdAt->format('Y-m-d H:i:s');
     }
-
+    
+    /**
+     * 
+     * @return string
+     */
+    public function getCombinedName()
+    {
+        return sprintf('%s - %s', $this->name, $this->ip);
+    }
 }

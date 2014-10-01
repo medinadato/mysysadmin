@@ -14,6 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Domain
 {
+
     /**
      * @var integer
      *
@@ -62,6 +63,18 @@ class Domain
     private $server;
 
     /**
+     * 
+     * @param int $domainId
+     * @return \MDN\MySysBundle\Entity\Domain
+     */
+    public function setDomainId($domainId)
+    {
+        $this->domainId = $domainId;
+        
+        return $this;
+    }
+    
+    /**
      * Get domainId
      *
      * @return integer 
@@ -69,6 +82,15 @@ class Domain
     public function getDomainId()
     {
         return $this->domainId;
+    }
+
+    /**
+     * Alias
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->getDomainId();
     }
 
     /**
@@ -185,4 +207,5 @@ class Domain
     {
         return $this->server;
     }
+
 }

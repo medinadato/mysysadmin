@@ -41,10 +41,14 @@ class DomainType
         /** @var $grid \APY\DataGridBundle\Grid\Grid */
         $grid = $this->container->get('grid');
 
-        // runs the search
+        /**
+         * var $qb Doctrine\ORM\QueryBuilder
+         */
         $qb = $this->container->get('doctrine')->getManager()->createQueryBuilder();
-        $rs = $qb->select('d.domainId, d.serverId, d.url, d.rootPath, d.hostConfigPath, d.createdAt')
+        
+        $rs = $qb->select('d.domainId, s.name AS server, d.url, d.rootPath, d.hostConfPath, d.createdAt')
                 ->from('MDNMySysBundle:Domain', 'd')
+                ->innerJoin('d.server', 's')
                 ->getQuery()
                 ->getResult();
 
@@ -63,16 +67,37 @@ class DomainType
                 'title' => 'Domain Name',
                     )),
             new Column\TextColumn(array(
-                'id' => 'ip',
-                'field' => 'ip',
+                'id' => 'server',
+                'field' => 'server',
+                'source' => true,
+                'title' => 'Server',
+                    )),
+            new Column\TextColumn(array(
+                'id' => 'url',
+                'field' => 'url',
                 'filterable' => true,
                 'source' => true,
-                'title' => 'IP Address',
+                'title' => 'URL',
+                    )),
+            new Column\TextColumn(array(
+                'id' => 'rootPath',
+                'field' => 'rootPath',
+                'filterable' => false,
+                'source' => true,
+                'title' => 'Root Path',
+                    )),
+            new Column\TextColumn(array(
+                'id' => 'hostConfPath',
+                'field' => 'hostConfPath',
+                'filterable' => false,
+                'source' => true,
+                'title' => 'Host Config. Path',
                     )),
             new Column\DateColumn(array(
                 'id' => 'createdAt',
                 'field' => 'createdAt',
                 'source' => true,
+                'filterable' => false,
                 'title' => 'Created At',
                     )),
         );
@@ -108,9 +133,9 @@ class DomainType
         $grid->addRowAction($editRowAction);
         
         // DELETE
-        $deleteRowAction = new Action\RowAction('Delete', 'mdn_admin_user_delete', true, '_self');
-        $deleteRowAction->setRouteParameters(array('userId'));
-        $deleteRowAction->setRouteParametersMapping(array('userId' => 'id'));
+        $deleteRowAction = new Action\RowAction('Delete', 'mdn_my_sys_domain_delete', true, '_self');
+        $deleteRowAction->setRouteParameters(array('domainId'));
+        $deleteRowAction->setRouteParametersMapping(array('domainId' => 'id'));
 
         $deleteRowAction->manipulateRender(function ($action, $row) {
             if (!empty($row->getField('deletedAt'))) {
