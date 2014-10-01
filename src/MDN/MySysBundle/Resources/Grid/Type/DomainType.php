@@ -1,6 +1,6 @@
 <?php
 
-namespace MDN\AdminBundle\Grid\Type;
+namespace MDN\MySysBundle\Resources\Grid\Type;
 
 use Symfony\Component\DependencyInjection\ContainerInterface as Container;
 use APY\DataGridBundle\Grid\Source;
@@ -11,7 +11,7 @@ use APY\DataGridBundle\Grid\Export;
 /**
  * 
  */
-class RoleType
+class DomainType
 {
 
     /**
@@ -43,41 +43,31 @@ class RoleType
 
         // runs the search
         $qb = $this->container->get('doctrine')->getManager()->createQueryBuilder();
-        $rs = $qb->select('r.roleId, r.code, r.name, r.createdAt, r.deletedAt')
-                ->addSelect("COUNT(u) number_users")
-                ->from('MDNAdminBundle:Role', 'r')
-                ->leftJoin('r.user', 'u')
-                ->groupBy('r.roleId')
+        $rs = $qb->select('d.domainId, d.serverId, d.url, d.rootPath, d.hostConfigPath, d.createdAt')
+                ->from('MDNMySysBundle:Domain', 'd')
                 ->getQuery()
                 ->getResult();
-        
+
         $columns = array(
             new Column\NumberColumn(array(
-                'id' => 'roleId',
-                'field' => 'roleId',
+                'id' => 'domainId',
+                'field' => 'domainId',
                 'filterable' => true,
                 'source' => true,
                 'title' => 'Id',
                     )),
             new Column\TextColumn(array(
-                'id' => 'code',
-                'field' => 'code',
-                'source' => true,
-                'title' => 'Code',
-                    )),
-            new Column\TextColumn(array(
                 'id' => 'name',
                 'field' => 'name',
-                'filterable' => true,
                 'source' => true,
-                'title' => 'Display Name',
+                'title' => 'Domain Name',
                     )),
-            new Column\NumberColumn(array(
-                'id' => 'number_users',
-                'field' => 'number_users',
+            new Column\TextColumn(array(
+                'id' => 'ip',
+                'field' => 'ip',
                 'filterable' => true,
                 'source' => true,
-                'title' => 'Number of Users',
+                'title' => 'IP Address',
                     )),
             new Column\DateColumn(array(
                 'id' => 'createdAt',
@@ -86,7 +76,7 @@ class RoleType
                 'title' => 'Created At',
                     )),
         );
-        
+
         // source
         $source = new Source\Vector($rs, $columns);
 
@@ -95,7 +85,7 @@ class RoleType
         $grid->setNoDataMessage(false);
 
         // Set the identifier of the grid
-        $grid->setId('mdn_role');
+        $grid->setId('mdn_domain');
 
         // Persist state
         $grid->setPersistence(true);
@@ -105,38 +95,32 @@ class RoleType
         $grid->addExport(new Export\CSVExport('CSV Export', 'csv_export'));
         $grid->addExport(new Export\JSONExport('JSON Export', 'json_export'));
 
-        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        # Columns
-        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // Show/Hide columns
-        $grid->setVisibleColumns(array('roleId', 'code', 'name', 'createdAt', 'number_users', 'enabled'));
-        
-        // Add a typed column with a rendering callback (status)
-        $enabledColumn = new Column\TextColumn(array(
-            'id' => 'enabled',
-            'title' => 'Enabled',
-            'sortable' => false,
-            'filterable' => true,
-            'source' => false,
-        ));
-
-        $enabledColumn->manipulateRenderCell(function($value, $row, $router) {
-            return (empty($row->getField('deletedAt'))) ? 'Yes' : 'No';
-        });
-        $grid->addColumn($enabledColumn);
-
         // Set Default order
-        $grid->setDefaultOrder('roleId', 'asc');
-        
+        $grid->setDefaultOrder('domainId', 'asc');
 
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         # Row actions
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // Edit
-        $editRowAction = new Action\RowAction('Edit', 'mdn_admin_role_update', false, '_self');
-        $editRowAction->setRouteParameters(array('roleId'));
-        $editRowAction->setRouteParametersMapping(array('roleId' => 'id'));
+        $editRowAction = new Action\RowAction('Edit', 'mdn_my_sys_domain_update', false, '_self');
+        $editRowAction->setRouteParameters(array('domainId'));
+        $editRowAction->setRouteParametersMapping(array('domainId' => 'id'));
         $grid->addRowAction($editRowAction);
+        
+        // DELETE
+        $deleteRowAction = new Action\RowAction('Delete', 'mdn_admin_user_delete', true, '_self');
+        $deleteRowAction->setRouteParameters(array('userId'));
+        $deleteRowAction->setRouteParametersMapping(array('userId' => 'id'));
+
+        $deleteRowAction->manipulateRender(function ($action, $row) {
+            if (!empty($row->getField('deletedAt'))) {
+                return NULL;
+            }
+
+            return $action;
+        });
+
+        $grid->addRowAction($deleteRowAction);
 
         return $grid;
     }

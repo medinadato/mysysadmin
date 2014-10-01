@@ -3,7 +3,7 @@
 namespace MDN\AdminBundle\Service;
 
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface as Container;
+use Symfony\Component\Security\Core\Encoder\EncoderFactory;
 
 class UserManager
 {
@@ -16,9 +16,9 @@ class UserManager
 
     /**
      * 
-     * @param \Symfony\Component\DependencyInjection\ContainerInterface $encoderFactory
+     * @param \Symfony\Component\Security\Core\Encoder\EncoderFactory $encoderFactory
      */
-    public function __construct(Container $encoderFactory)
+    public function __construct(EncoderFactory $encoderFactory)
     {
         $this->encoderFactory = $encoderFactory;
     }
@@ -31,7 +31,8 @@ class UserManager
      */
     public function setUserPassword(UserInterface $user, $plaintextPassword)
     {
-        $hash = $this->encoderFactory->getEncoder($user)->encodePassword($plaintextPassword, $user->getSalt());
+        $hash = $this->encoderFactory->getEncoder($user)
+                ->encodePassword($plaintextPassword, $user->getSalt());
         $user->setPassword($hash);
     }
 

@@ -1,3 +1,29 @@
+# domain
+mdn_my_sys_domain_index:
+    pattern:  /admin/domain/
+    defaults: { _controller: MDNMySysBundle:Domain:index }
+    methods:  [GET,POST]
+    
+    
+mdn_my_sys_domain_create:
+    pattern:  /admin/domain/create/
+    defaults: { _controller: MDNMySysBundle:Domain:create }
+    methods:  [GET,POST]
+    
+mdn_my_sys_domain_update:
+    pattern:  /admin/domain/update/{id}
+    defaults: { _controller: MDNMySysBundle:Domain:update }
+    methods:  [GET,POST]
+    requirements:
+        id: "\d+"
+    
+mdn_my_sys_domain_delete:
+    pattern:  /admin/domain/delete/{id}
+    defaults: { _controller: MDNMySysBundle:Domain:delete }
+    methods:  [GET]
+    requirements:
+        id: "\d+"
+        
 # server
 mdn_my_sys_server_index:
     pattern:  /admin/server/

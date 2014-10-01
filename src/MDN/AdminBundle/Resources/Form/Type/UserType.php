@@ -1,6 +1,6 @@
 <?php
 
-namespace MDN\AdminBundle\Form\Type;
+namespace MDN\AdminBundle\Resources\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;

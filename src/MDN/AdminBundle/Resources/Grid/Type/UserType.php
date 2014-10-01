@@ -1,6 +1,6 @@
 <?php
 
-namespace MDN\AdminBundle\Grid\Type;
+namespace MDN\AdminBundle\Resources\Grid\Type;
 
 use Symfony\Component\DependencyInjection\ContainerInterface as Container;
 use APY\DataGridBundle\Grid\Source;
@@ -131,7 +131,7 @@ class UserType
 
         $grid->addRowAction($deleteRowAction);
         
-
+        // return object
         return $grid;
     }
 

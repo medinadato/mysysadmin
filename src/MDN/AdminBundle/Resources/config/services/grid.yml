@@ -1,8 +1,8 @@
 services:            
     mdn_admin.grid.type.user:
-        class: MDN\AdminBundle\Grid\Type\UserType
+        class: MDN\AdminBundle\Resources\Grid\Type\UserType
         arguments: ['@service_container']
         
     mdn_admin.grid.type.role:
-        class: MDN\AdminBundle\Grid\Type\RoleType
+        class: MDN\AdminBundle\Resources\Grid\Type\RoleType
         arguments: ['@service_container']

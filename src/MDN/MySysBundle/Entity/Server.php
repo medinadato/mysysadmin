@@ -52,7 +52,17 @@ class Server
     function getServerId()
     {
         return $this->serverId;
-    }    
+    }
+    
+    /**
+     * Alias for serverId
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->getServerId();
+    }
 
     /**
      * 

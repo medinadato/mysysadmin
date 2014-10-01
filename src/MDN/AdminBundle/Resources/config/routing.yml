@@ -1,4 +1,3 @@
-
 mdn_admin_dashboard_index:
     pattern:  /admin/dashboard/
     defaults: { _controller: MDNAdminBundle:Index:index }

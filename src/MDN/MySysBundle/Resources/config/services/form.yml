@@ -1,5 +1,10 @@
 services:            
-#    mdn_admin.form.type.user:
-#        class: MDN\AdminBundle\Form\Type\UserType
-#        tags:
-#            - { name: form.type, alias: user }
+    mdn_my_sys.form.type.server:
+        class: MDN\MySysBundle\Resources\Form\Type\ServerType
+        tags:
+            - { name: form.type, alias: server }
+            
+    mdn_my_sys.form.type.domain:
+        class: MDN\MySysBundle\Resources\Form\Type\DomainType
+        tags:
+            - { name: form.type, alias: domain }

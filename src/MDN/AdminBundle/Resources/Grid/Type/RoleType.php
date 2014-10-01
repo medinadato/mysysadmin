@@ -1,6 +1,6 @@
 <?php
 
-namespace MDN\MySysBundle\Grid\Type;
+namespace MDN\AdminBundle\Resources\Grid\Type;
 
 use Symfony\Component\DependencyInjection\ContainerInterface as Container;
 use APY\DataGridBundle\Grid\Source;
@@ -11,7 +11,7 @@ use APY\DataGridBundle\Grid\Export;
 /**
  * 
  */
-class ServerType
+class RoleType
 {
 
     /**
@@ -43,31 +43,41 @@ class ServerType
 
         // runs the search
         $qb = $this->container->get('doctrine')->getManager()->createQueryBuilder();
-        $rs = $qb->select('s.serverId, s.name, s.ip, s.createdAt')
-                ->from('MDNMySysBundle:Server', 's')
+        $rs = $qb->select('r.roleId, r.code, r.name, r.createdAt, r.deletedAt')
+                ->addSelect("COUNT(u) number_users")
+                ->from('MDNAdminBundle:Role', 'r')
+                ->leftJoin('r.user', 'u')
+                ->groupBy('r.roleId')
                 ->getQuery()
                 ->getResult();
-
+        
         $columns = array(
             new Column\NumberColumn(array(
-                'id' => 'serverId',
-                'field' => 'serverId',
+                'id' => 'roleId',
+                'field' => 'roleId',
                 'filterable' => true,
                 'source' => true,
                 'title' => 'Id',
                     )),
             new Column\TextColumn(array(
-                'id' => 'name',
-                'field' => 'name',
+                'id' => 'code',
+                'field' => 'code',
                 'source' => true,
-                'title' => 'Server Name',
+                'title' => 'Code',
                     )),
             new Column\TextColumn(array(
-                'id' => 'ip',
-                'field' => 'ip',
+                'id' => 'name',
+                'field' => 'name',
                 'filterable' => true,
                 'source' => true,
-                'title' => 'IP Address',
+                'title' => 'Display Name',
+                    )),
+            new Column\NumberColumn(array(
+                'id' => 'number_users',
+                'field' => 'number_users',
+                'filterable' => true,
+                'source' => true,
+                'title' => 'Number of Users',
                     )),
             new Column\DateColumn(array(
                 'id' => 'createdAt',
@@ -76,7 +86,7 @@ class ServerType
                 'title' => 'Created At',
                     )),
         );
-
+        
         // source
         $source = new Source\Vector($rs, $columns);
 
@@ -85,7 +95,7 @@ class ServerType
         $grid->setNoDataMessage(false);
 
         // Set the identifier of the grid
-        $grid->setId('mdn_server');
+        $grid->setId('mdn_role');
 
         // Persist state
         $grid->setPersistence(true);
@@ -95,18 +105,40 @@ class ServerType
         $grid->addExport(new Export\CSVExport('CSV Export', 'csv_export'));
         $grid->addExport(new Export\JSONExport('JSON Export', 'json_export'));
 
+        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        # Columns
+        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // Show/Hide columns
+        $grid->setVisibleColumns(array('roleId', 'code', 'name', 'createdAt', 'number_users', 'enabled'));
+        
+        // Add a typed column with a rendering callback (status)
+        $enabledColumn = new Column\TextColumn(array(
+            'id' => 'enabled',
+            'title' => 'Enabled',
+            'sortable' => false,
+            'filterable' => true,
+            'source' => false,
+        ));
+
+        $enabledColumn->manipulateRenderCell(function($value, $row, $router) {
+            return (empty($row->getField('deletedAt'))) ? 'Yes' : 'No';
+        });
+        $grid->addColumn($enabledColumn);
+
         // Set Default order
-        $grid->setDefaultOrder('serverId', 'asc');
+        $grid->setDefaultOrder('roleId', 'asc');
+        
 
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         # Row actions
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // Edit
-        $editRowAction = new Action\RowAction('Edit', 'mdn_my_sys_server_update', false, '_self');
-        $editRowAction->setRouteParameters(array('serverId'));
-        $editRowAction->setRouteParametersMapping(array('serverId' => 'id'));
+        $editRowAction = new Action\RowAction('Edit', 'mdn_admin_role_update', false, '_self');
+        $editRowAction->setRouteParameters(array('roleId'));
+        $editRowAction->setRouteParametersMapping(array('roleId' => 'id'));
         $grid->addRowAction($editRowAction);
 
+        // return object
         return $grid;
     }
 
