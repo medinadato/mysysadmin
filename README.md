@@ -109,6 +109,10 @@ Then create the entity class file by:
 
 By now you should be able to see the new file MDN\AdminBundle\Entity\Server.php created.
 
+Now, add the Getters and Setters by using 
+
+    $ php app/console doctrine:generate:entities MDN/AdminBundle/Entity/Server
+
 You can also delete the files on the directory src/MDN/AdminBundle/Resources/config/doctrine/.
 
 ## Controller

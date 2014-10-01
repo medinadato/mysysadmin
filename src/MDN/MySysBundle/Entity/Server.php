@@ -8,7 +8,9 @@ use Doctrine\ORM\Mapping as ORM;
  * Server
  *
  * @ORM\Table(name="server")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="MDN\MySysBundle\Entity\ServerRepository")
+ * 
+ * @author Renato Medina <medina@mdnsolutions.com>
  */
 class Server
 {

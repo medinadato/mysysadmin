@@ -8,7 +8,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use MDN\MySysBundle\Entity\Server as ServerEntity;
 
 /**
- * 
+ * @author Renato Medina <medina@mdnsolutions.com>
  */
 class ServerController extends Controller
 {
@@ -149,15 +149,8 @@ class ServerController extends Controller
         try {
             $em = $this->getDoctrine()->getManager();
 
-            $serverRepo = $em->getRepository('MDNMySysBundle:Server');
-            $server = $serverRepo->find($id);
-
-            if (!isset($server)) {
-                throw new \RuntimeException('Server not found.');
-            }
-
-            $server->setDeletedAt(new \Datetime());
-            $em->flush();
+            $em->getRepository('MDNMySysBundle:Server')
+                    ->delete($id);
 
             $this->get('session')->getFlashBag()->add('success', 'Record removed with success');
         } catch (\RuntimeException $e) {

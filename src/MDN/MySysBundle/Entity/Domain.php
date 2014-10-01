@@ -9,6 +9,8 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="domain", indexes={@ORM\Index(name="fk_domain_server1_idx", columns={"server_id"})})
  * @ORM\Entity
+ * 
+ * @author Renato Medina <medina@mdnsolutions.com>
  */
 class Domain
 {
@@ -59,85 +61,128 @@ class Domain
      */
     private $server;
 
-    function setDomainId($domainId)
-    {
-        $this->domainId = $domainId;
-        
-        return $this;
-    }
-
-    function getDomainId()
+    /**
+     * Get domainId
+     *
+     * @return integer 
+     */
+    public function getDomainId()
     {
         return $this->domainId;
     }
-    
-    /**
-     * Alias
-     * @return int id
-     */
-    function getId()
-    {
-        return $this->getDomainId();
-    }
 
-    function setUrl($url)
+    /**
+     * Set url
+     *
+     * @param string $url
+     * @return Domain
+     */
+    public function setUrl($url)
     {
         $this->url = $url;
-        
+
         return $this;
     }
-    
-    function getUrl()
+
+    /**
+     * Get url
+     *
+     * @return string 
+     */
+    public function getUrl()
     {
         return $this->url;
     }
 
-    function setRootPath($rootPath)
+    /**
+     * Set rootPath
+     *
+     * @param string $rootPath
+     * @return Domain
+     */
+    public function setRootPath($rootPath)
     {
         $this->rootPath = $rootPath;
-        
+
         return $this;
     }
-    
-    function getRootPath()
+
+    /**
+     * Get rootPath
+     *
+     * @return string 
+     */
+    public function getRootPath()
     {
         return $this->rootPath;
     }
 
-    function setHostConfPath($hostConfPath)
+    /**
+     * Set hostConfPath
+     *
+     * @param string $hostConfPath
+     * @return Domain
+     */
+    public function setHostConfPath($hostConfPath)
     {
         $this->hostConfPath = $hostConfPath;
-        
+
         return $this;
     }
 
-    function getHostConfPath()
+    /**
+     * Get hostConfPath
+     *
+     * @return string 
+     */
+    public function getHostConfPath()
     {
         return $this->hostConfPath;
     }
-    
-    function setCreatedAt(\DateTime $createdAt)
+
+    /**
+     * Set createdAt
+     *
+     * @param \DateTime $createdAt
+     * @return Domain
+     */
+    public function setCreatedAt($createdAt)
     {
         $this->createdAt = $createdAt;
-        
+
         return $this;
     }
 
-    function getCreatedAt()
+    /**
+     * Get createdAt
+     *
+     * @return \DateTime 
+     */
+    public function getCreatedAt()
     {
-        return $this->createdAt->format('Y-m-d H:i:s');
+        return $this->createdAt;
     }
 
-    function setServer(\MDN\MySysBundle\Entity\Server $server)
+    /**
+     * Set server
+     *
+     * @param \MDN\MySysBundle\Entity\Server $server
+     * @return Domain
+     */
+    public function setServer(\MDN\MySysBundle\Entity\Server $server = null)
     {
         $this->server = $server;
-        
+
         return $this;
     }
 
-    function getServer()
+    /**
+     * Get server
+     *
+     * @return \MDN\MySysBundle\Entity\Server 
+     */
+    public function getServer()
     {
         return $this->server;
     }
-
 }
