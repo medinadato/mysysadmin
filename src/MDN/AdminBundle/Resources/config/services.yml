@@ -30,3 +30,6 @@ services:
 #        tags:
 #            -  { name: doctrine.entity_listener }
             
+#    mdn_admin.user_manager:
+#        class: MDN\AdminBundle\Service\UserManager
+#        arguments: ['@security.encoder_factory']

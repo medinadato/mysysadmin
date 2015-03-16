@@ -1,0 +1,8 @@
+services:            
+    mdn_my_sys.grid.type.server:
+        class: MDN\MySysBundle\Resources\Grid\Type\ServerType
+        arguments: ['@service_container']
+        
+    mdn_my_sys.grid.type.domain:
+        class: MDN\MySysBundle\Resources\Grid\Type\DomainType
+        arguments: ['@service_container']

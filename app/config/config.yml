@@ -19,6 +19,11 @@ framework:
     trusted_proxies: ~
     session:         ~
     fragments:       ~
+    session:
+        cookie_lifetime: 0
+        save_path: "%kernel.root_dir%/Sessions/"
+        cookie_httponly: false
+       # save_path: ~
 
 # Twig Configuration
 twig:
@@ -29,7 +34,7 @@ twig:
 assetic:
     debug:          %kernel.debug%
     use_controller: false
-    bundles:        [ "MDNAdminBundle" ]
+    bundles:        [ "MDNAdminBundle", "MDNMySysBundle" ]
     #java: /usr/bin/java
     filters:
         cssrewrite: ~
@@ -63,6 +68,7 @@ doctrine:
                 connection:   default
                 mappings:
                     MDNAdminBundle: ~
+                    MDNMySysBundle: ~
 #        entity_listener_resolver: mdn_admin.doctrine.entity_listener_resolver
 #
 #services:
@@ -90,3 +96,4 @@ swiftmailer:
 parameters:
     tokens:
         client1: pass1
+        

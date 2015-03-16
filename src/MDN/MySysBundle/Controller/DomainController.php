@@ -1,33 +1,33 @@
 <?php
 
-namespace MDN\AdminBundle\Controller;
+namespace MDN\MySysBundle\Controller;
 
 use MDN\AdminBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use MDN\AdminBundle\Entity\User as UserEntity;
+use MDN\MySysBundle\Entity\Domain as DomainEntity;
 
 /**
- * 
+ * @author Renato Medina <medina@mdnsolutions.com>
  */
-class UserController extends Controller
+class DomainController extends Controller
 {
 
     /**
      * 
      * @return array
-     * @Template("MDNAdminBundle:User:index.html.twig")
+     * @Template("MDNMySysBundle:Domain:index.html.twig")
      */
     public function indexAction()
     {
 
-        $grid = $this->get('mdn_admin.grid.type.user')->build();
+        $grid = $this->get('mdn_my_sys.grid.type.domain')->build();
 
         $this->setTemplateParams(array(
-            'template_title' => 'User List',
+            'template_title' => 'Domain List',
             'template_shortcuts' => array(
                 array(
-                    'path' => 'mdn_admin_user_create',
+                    'path' => 'mdn_my_sys_domain_create',
                     'title' => 'Add New',
                 ),
             ),
@@ -38,19 +38,19 @@ class UserController extends Controller
 
     /**
      * 
-     * @param \MDN\AdminBundle\Entity\User $user
+     * @param \MDN\MySysBundle\Entity\Domain $domain
      * @param array $params
      * @return boolean
      */
-    private function processUserForm(UserEntity $user, array $params = array())
+    private function processDomainForm(DomainEntity $domain, array $params = array())
     {
         /**
          * @var \Symfony\Component\Form\Form $form
          */
-        $form = $this->createForm('user', $user, $params);
+        $form = $this->createForm('domain', $domain, $params);
 
         // add form into the view
-        $this->setTemplateParams(array('userForm' => $form->createView(),));
+        $this->setTemplateParams(array('domainForm' => $form->createView(),));
 
         if ('POST' === $this->getRequest()->getMethod()) {
 
@@ -58,12 +58,9 @@ class UserController extends Controller
 
             if ($form->isValid()) {
 
-                if ($user->getId() === NULL) {
-                    $this->getDoctrine()->getManager()->merge($user);
+                if ($domain->getId() === NULL) {
+                    $this->getDoctrine()->getManager()->merge($domain);
                 }
-                
-                // encrypt password
-                $this->get('mdn_admin.user_manager')->setUserPassword($user, $form->get('password')->getData());
 
                 $this->getDoctrine()->getManager()->flush();
 
@@ -72,7 +69,7 @@ class UserController extends Controller
         }
 
         // update form into the view
-        $this->setTemplateParams(array('userForm' => $form->createView(),));
+        $this->setTemplateParams(array('domainForm' => $form->createView(),));
 
         return true;
     }
@@ -80,23 +77,23 @@ class UserController extends Controller
     /**
      * 
      * @return array
-     * @Template("MDNAdminBundle:User:update.html.twig")
+     * @Template("MDNMySysBundle:Domain:update.html.twig")
      */
     public function createAction()
     {
         // view template
         $this->setTemplateParams(array(
-            'template_title' => 'User Add New',
+            'template_title' => 'Domain Add New',
             'template_shortcuts' => array(
                 array(
-                    'path' => 'mdn_admin_user_index',
+                    'path' => 'mdn_my_sys_domain_index',
                     'title' => 'List',
                 ),
             ),
         ));
 
-        $this->processUserForm(new UserEntity(), array(
-            'action' => $this->generateUrl('mdn_admin_user_create'),
+        $this->processDomainForm(new DomainEntity(), array(
+            'action' => $this->generateUrl('mdn_my_sys_domain_create'),
         ));
 
         return $this->getTemplateParams();
@@ -107,34 +104,34 @@ class UserController extends Controller
      * @param int $id
      * @return array
      * @throws NotFoundHttpException
-     * @Template("MDNAdminBundle:User:update.html.twig")
+     * @Template("MDNMySysBundle:Domain:update.html.twig")
      */
     public function updateAction($id)
     {
         // view template
         $this->setTemplateParams(array(
-            'template_title' => 'User Edit',
+            'template_title' => 'Domain Edit',
             'template_shortcuts' => array(
                 array(
-                    'path' => 'mdn_admin_user_index',
+                    'path' => 'mdn_my_sys_domain_index',
                     'title' => 'List',
                 ),
                 array(
-                    'path' => 'mdn_admin_user_create',
+                    'path' => 'mdn_my_sys_domain_create',
                     'title' => 'Add New',
                 ),
             ),
         ));
 
-        $user = $this->getRepository('MDNAdminBundle:User')->find($id);
+        $domain = $this->getRepository('MDNMySysBundle:Domain')->find($id);
 
-        if ($user === NULL) {
-            throw new \RuntimeException('User not found.');
-            // return new Response('User not found.', 500);
+        if ($domain === NULL) {
+            throw new \RuntimeException('Domain not found.');
+            // return new Response('Domain not found.', 500);
         }
 
-        $this->processUserForm($user, array(
-            'action' => $this->generateUrl('mdn_admin_user_update', array('id' => $id,)),
+        $this->processDomainForm($domain, array(
+            'action' => $this->generateUrl('mdn_my_sys_domain_update', array('id' => $id,)),
         ));
 
         return $this->getTemplateParams();
@@ -152,15 +149,8 @@ class UserController extends Controller
         try {
             $em = $this->getDoctrine()->getManager();
 
-            $userRepo = $em->getRepository('MDNAdminBundle:User');
-            $user = $userRepo->find($id);
-
-            if (!isset($user)) {
-                throw new \RuntimeException('User not found.');
-            }
-
-            $user->setDeletedAt(new \Datetime());
-            $em->flush();
+//            $em->getRepository('MDNMySysBundle:Domain')
+//                    ->remove($id);
 
             $this->get('session')->getFlashBag()->add('success', 'Record removed with success');
         } catch (\RuntimeException $e) {
@@ -168,7 +158,6 @@ class UserController extends Controller
             $this->get('session')->getFlashBag()->add('error', $e->getMessage());
         }
 
-        return $this->redirect($this->generateUrl('mdn_admin_user_index'));
+        return $this->redirect($this->generateUrl('mdn_my_sys_domain_index'));
     }
-
 }

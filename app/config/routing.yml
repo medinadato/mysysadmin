@@ -1,3 +1,7 @@
+mdn_my_sys:
+    resource: "@MDNMySysBundle/Resources/config/routing.yml"
+    prefix:   /
+
 mdn_admin:
     resource: "@MDNAdminBundle/Resources/config/routing.yml"
     prefix:   /

@@ -19,6 +19,7 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new MDN\AdminBundle\MDNAdminBundle(),
             new APY\DataGridBundle\APYDataGridBundle(),
+            new MDN\MySysBundle\MDNMySysBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

@@ -39,7 +39,14 @@
                 <div class="menu">
                     <ul>
                         <li><a href="{{ path("mdn_admin_dashboard_index") }}">Dashboard</a></li>
-                        <li>Administration
+                        <li>Manager
+                            <ul>
+                                <li><a href="{{ path("mdn_my_sys_server_index") }}">Server</a></li>
+                                <li><a href="{{ path("mdn_my_sys_domain_index") }}">Domain</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#">Report</a></li>
+                        <li>System
                             <ul>
                                 <li><a href="{{ path("mdn_admin_user_index") }}">User</a></li>
                                 <li><a href="{{ path("mdn_admin_role_index") }}">Role</a></li>

@@ -1,0 +1,8 @@
+imports:
+    - { resource: services/grid.yml }
+    - { resource: services/form.yml }
+    
+services:
+#    mdn_my_sys.example:
+#        class: MDN\MySysBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]

@@ -1,19 +1,12 @@
 <?php
 
-namespace MDN\AdminBundle\Grid\Type;
+namespace MDN\AdminBundle\Resources\Grid\Type;
 
 use Symfony\Component\DependencyInjection\ContainerInterface as Container;
-use APY\DataGridBundle\Grid\Source\Vector;
-use APY\DataGridBundle\Grid\Column\BlankColumn;
-use APY\DataGridBundle\Grid\Column\DateColumn;
-use APY\DataGridBundle\Grid\Column\TextColumn;
-use APY\DataGridBundle\Grid\Column\ActionsColumn;
-use APY\DataGridBundle\Grid\Action\MassAction;
-use APY\DataGridBundle\Grid\Action\DeleteMassAction;
-use APY\DataGridBundle\Grid\Action\RowAction;
-use APY\DataGridBundle\Grid\Export\XMLExport;
-use APY\DataGridBundle\Grid\Export\CSVExport;
-use APY\DataGridBundle\Grid\Export\JSONExport;
+use APY\DataGridBundle\Grid\Source;
+use APY\DataGridBundle\Grid\Column;
+use APY\DataGridBundle\Grid\Action;
+use APY\DataGridBundle\Grid\Export;
 
 /**
  * 
@@ -57,12 +50,49 @@ class RoleType
                 ->groupBy('r.roleId')
                 ->getQuery()
                 ->getResult();
-
+        
+        $columns = array(
+            new Column\NumberColumn(array(
+                'id' => 'roleId',
+                'field' => 'roleId',
+                'filterable' => true,
+                'source' => true,
+                'title' => 'Id',
+                    )),
+            new Column\TextColumn(array(
+                'id' => 'code',
+                'field' => 'code',
+                'source' => true,
+                'title' => 'Code',
+                    )),
+            new Column\TextColumn(array(
+                'id' => 'name',
+                'field' => 'name',
+                'filterable' => true,
+                'source' => true,
+                'title' => 'Display Name',
+                    )),
+            new Column\NumberColumn(array(
+                'id' => 'number_users',
+                'field' => 'number_users',
+                'filterable' => true,
+                'source' => true,
+                'title' => 'Number of Users',
+                    )),
+            new Column\DateColumn(array(
+                'id' => 'createdAt',
+                'field' => 'createdAt',
+                'source' => true,
+                'title' => 'Created At',
+                    )),
+        );
+        
         // source
-        $source = new Vector($rs);
+        $source = new Source\Vector($rs, $columns);
 
         // set it
         $grid->setSource($source);
+        $grid->setNoDataMessage(false);
 
         // Set the identifier of the grid
         $grid->setId('mdn_role');
@@ -71,9 +101,9 @@ class RoleType
         $grid->setPersistence(true);
 
         // Exports
-        $grid->addExport(new XMLExport('XML Export', 'xml_export'));
-        $grid->addExport(new CSVExport('CSV Export', 'csv_export'));
-        $grid->addExport(new JSONExport('JSON Export', 'json_export'));
+        $grid->addExport(new Export\XMLExport('XML Export', 'xml_export'));
+        $grid->addExport(new Export\CSVExport('CSV Export', 'csv_export'));
+        $grid->addExport(new Export\JSONExport('JSON Export', 'json_export'));
 
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         # Columns
@@ -82,7 +112,7 @@ class RoleType
         $grid->setVisibleColumns(array('roleId', 'code', 'name', 'createdAt', 'number_users', 'enabled'));
         
         // Add a typed column with a rendering callback (status)
-        $enabledColumn = new TextColumn(array(
+        $enabledColumn = new Column\TextColumn(array(
             'id' => 'enabled',
             'title' => 'Enabled',
             'sortable' => false,
@@ -95,18 +125,6 @@ class RoleType
         });
         $grid->addColumn($enabledColumn);
 
-        // customizes columns
-        $grid->getColumn('roleId')
-                ->setTitle('id');
-        $grid->getColumn('code')
-                ->setTitle('Code');
-        $grid->getColumn('name')
-                ->setTitle('Display Name');
-        $grid->getColumn('createdAt')
-                ->setTitle('Created At');
-        $grid->getColumn('number_users')
-                ->setTitle('Number of Users');
-
         // Set Default order
         $grid->setDefaultOrder('roleId', 'asc');
         
@@ -115,11 +133,12 @@ class RoleType
         # Row actions
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // Edit
-        $editRowAction = new RowAction('Edit', 'mdn_admin_role_update', false, '_self');
+        $editRowAction = new Action\RowAction('Edit', 'mdn_admin_role_update', false, '_self');
         $editRowAction->setRouteParameters(array('roleId'));
         $editRowAction->setRouteParametersMapping(array('roleId' => 'id'));
         $grid->addRowAction($editRowAction);
 
+        // return object
         return $grid;
     }
 

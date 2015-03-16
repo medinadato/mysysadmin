@@ -1,21 +1,12 @@
 <?php
 
-namespace MDN\AdminBundle\Grid\Type;
+namespace MDN\AdminBundle\Resources\Grid\Type;
 
 use Symfony\Component\DependencyInjection\ContainerInterface as Container;
-
-use APY\DataGridBundle\Grid\Source\Vector;
-
-use APY\DataGridBundle\Grid\Column\BlankColumn;
-use APY\DataGridBundle\Grid\Column\DateColumn;
-use APY\DataGridBundle\Grid\Column\TextColumn;
-use APY\DataGridBundle\Grid\Column\ActionsColumn;
-use APY\DataGridBundle\Grid\Action\MassAction;
-use APY\DataGridBundle\Grid\Action\DeleteMassAction;
-use APY\DataGridBundle\Grid\Action\RowAction;
-use APY\DataGridBundle\Grid\Export\XMLExport;
-use APY\DataGridBundle\Grid\Export\CSVExport;
-use APY\DataGridBundle\Grid\Export\JSONExport;
+use APY\DataGridBundle\Grid\Source;
+use APY\DataGridBundle\Grid\Column;
+use APY\DataGridBundle\Grid\Action;
+use APY\DataGridBundle\Grid\Export;
 
 class UserType
 {
@@ -57,11 +48,41 @@ class UserType
                 ->groupBy('u.userId')
                 ->getQuery()
                 ->getResult();
-                
+        
+        $columns = array(
+            new Column\NumberColumn(array(
+                'id' => 'userId',
+                'field' => 'userId',
+                'filterable' => true,
+                'source' => true,
+                'title' => 'Id',
+                    )),
+            new Column\TextColumn(array(
+                'id' => 'username',
+                'field' => 'username',
+                'source' => true,
+                'title' => 'Username',
+                    )),
+            new Column\NumberColumn(array(
+                'id' => 'number_roles',
+                'field' => 'number_roles',
+                'filterable' => true,
+                'source' => true,
+                'title' => 'Number of Roles',
+                    )),
+            new Column\DateColumn(array(
+                'id' => 'createdAt',
+                'field' => 'createdAt',
+                'source' => true,
+                'title' => 'Created At',
+                    )),
+        );
+        
         // source
-        $source = new Vector($rs);
+        $source = new Source\Vector($rs, $columns);
 
         $grid->setSource($source);
+        $grid->setNoDataMessage(false);
 
         // Set the identifier of the grid
         $grid->setId('mdn_user');
@@ -70,46 +91,33 @@ class UserType
         $grid->setPersistence(true);
 
         // Exports
-        $grid->addExport(new XMLExport('XML Export', 'xml_export'));
-        $grid->addExport(new CSVExport('CSV Export', 'csv_export'));
-        $grid->addExport(new JSONExport('JSON Export', 'json_export'));
+        $grid->addExport(new Export\XMLExport('XML Export', 'xml_export'));
+        $grid->addExport(new Export\CSVExport('CSV Export', 'csv_export'));
+        $grid->addExport(new Export\JSONExport('JSON Export', 'json_export'));
 
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         # Mass Actions
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // delete mass action
-        $grid->addMassAction(new DeleteMassAction());
+        $grid->addMassAction(new Action\DeleteMassAction());
 
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         # Columns
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // Show/Hide columns
-        $grid->setVisibleColumns(array('userId', 'username', 'createdAt', 'number_roles'));
-
         // Set Default order
         $grid->setDefaultOrder('userId', 'asc');
-        
-        // customizes columns
-        $grid->getColumn('userId')
-                ->setTitle('Id');
-        $grid->getColumn('username')
-                ->setTitle('Username');
-        $grid->getColumn('createdAt')
-                ->setTitle('Created At');
-        $grid->getColumn('number_roles')
-                ->setTitle('Number of Roles');
 
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         # Row actions
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // Edit
-        $editRowAction = new RowAction('Edit', 'mdn_admin_user_update', false, '_self');
+        $editRowAction = new Action\RowAction('Edit', 'mdn_admin_user_update', false, '_self');
         $editRowAction->setRouteParameters(array('userId'));
         $editRowAction->setRouteParametersMapping(array('userId' => 'id'));
         $grid->addRowAction($editRowAction);
 
         // DELETE
-        $deleteRowAction = new RowAction('Delete', 'mdn_admin_user_delete', true, '_self');
+        $deleteRowAction = new Action\RowAction('Delete', 'mdn_admin_user_delete', true, '_self');
         $deleteRowAction->setRouteParameters(array('userId'));
         $deleteRowAction->setRouteParametersMapping(array('userId' => 'id'));
 
@@ -123,7 +131,7 @@ class UserType
 
         $grid->addRowAction($deleteRowAction);
         
-
+        // return object
         return $grid;
     }
 

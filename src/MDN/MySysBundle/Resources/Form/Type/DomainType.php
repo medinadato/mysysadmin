@@ -1,12 +1,12 @@
 <?php
 
-namespace MDN\AdminBundle\Form\Type;
+namespace MDN\MySysBundle\Resources\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class RoleType extends AbstractType
+class DomainType extends AbstractType
 {
 
     /**
@@ -17,25 +17,21 @@ class RoleType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->setMethod('post')
-                ->add('roleId', 'hidden')
-                ->add('code', 'text', array('attr' => array(
-                        'maxlength' => 255,
-                        'required' => true,
-                    )
+                ->setAttributes(array('class' => 'myform'))
+                ->add('domainId', 'hidden')
+                ->add('server', 'entity', array(
+                    'class' => 'MDNMySysBundle:Server',
+                    'property' => 'combinedName',
+                    'multiple' => false,
                 ))
-                ->add('name', 'text', array('attr' => array(
-                        'maxlength' => 255,
-                        'required' => true,
-                    )
+                ->add('url', 'text', array(
+                    'required' => true,
                 ))
-                ->add('enabled', 'choice', array(
-                    'label' => 'Enabled',
-                    'choices' => array(
-                        'Y' => 'Yes',
-                        'N' => 'No',
-                    ),
-                    'required'    => true,
-                    'empty_data'  => null,
+                ->add('rootPath', 'text', array(
+                    'required' => true,
+                ))
+                ->add('hostConfPath', 'text', array(
+                    'required' => false,
                 ))
                 ->add('saveAndAdd', 'submit', array(
 //                    'attr' => array('formnovalidate' => 'formnovalidate'),
@@ -49,7 +45,8 @@ class RoleType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'MDN\AdminBundle\Entity\Role',
+            'data_class' => 'MDN\MySysBundle\Entity\Domain',
+//            'inherit_data' => true,
         ));
     }
 
@@ -59,7 +56,7 @@ class RoleType extends AbstractType
      */
     public function getName()
     {
-        return 'role';
+        return 'domain';
     }
 
 }

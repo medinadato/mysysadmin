@@ -49,14 +49,14 @@ Tip: Don't forget to create the database/user prior to import the tables:
 
 ### Via Symfony Console
 
-1. Database structure
+Database structure
 
-	ATTENTION: This operation should not be executed in a production environment
+> ATTENTION: This operation should not be executed in a production environment
 
     $ php app/console doctrine:database:create --env=dev
     $ php app/console doctrine:schema:create --env=dev --em=default
 
-2. Initial data
+### Authentication data
 
     $ php app/console doctrine:fixtures:load --env=dev --no-interaction
 
@@ -65,6 +65,9 @@ Tip: Don't forget to create the database/user prior to import the tables:
 You might or might not need to run
 
     $ sudo chmod -R 744 .
+    
+You also might or might not need to run:
+    $ sudo chmod 666 /var/run/php5-fpm.sock
 
 # Application
 
@@ -82,6 +85,46 @@ You should be able to access the server by the data:
 URL:  [http://local.mysysadmin.com/admin](http://local.mysysadmin.com/admin) 
 USER: admin[at]mdnsolutions.com
 PASS: 123456
+
+
+
+# Creating a CRUD
+
+This section I show an example of how to create your own custom CRUD module.
+In our case it's a new CRUD for the table Server in our MDN\AdminBundle.
+
+## Database Table
+
+Create your database table (e.g.: Server).
+
+### Mapping and Entities
+
+In order to map your entities into the application, run in your command line:
+
+    $ php app/console doctrine:mapping:import --em=default --filter='Server' MDNAdminBundle yml
+
+Then create the entity class file by:
+
+    $ php app/console doctrine:mapping:convert annotation ./src --em=default --filter='Server'
+
+By now you should be able to see the new file MDN\AdminBundle\Entity\Server.php created.
+
+Now, add the Getters and Setters by using 
+
+    $ php app/console doctrine:generate:entities MDN/AdminBundle/Entity/Server
+
+You can also delete the files on the directory src/MDN/AdminBundle/Resources/config/doctrine/.
+
+## Controller
+
+Create your controller in src/MDN/AdminBundle/Controller/ServerController.php
+This step includes creating the view as well.
+
+### Grid
+
+You might use the grid module available. To do so, register your grid as a service and load it 
+in your controller src/MDN/AdminBundle/Resources/config/services/grid.yml.
+
 
 # Extra libraries' documentations
 
