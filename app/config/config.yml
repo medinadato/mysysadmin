@@ -63,12 +63,12 @@ doctrine:
                 connection:   default
                 mappings:
                     MDNAdminBundle: ~
-        entity_listener_resolver: mdn_admin.doctrine.entity_listener_resolver
-
-services:
-    mdn_admin.doctrine.entity_listener_resolver:
-        class: MDN\AdminBundle\Doctrine\EntityListenerResolver
-        arguments: [ "@service_container" ]
+#        entity_listener_resolver: mdn_admin.doctrine.entity_listener_resolver
+#
+#services:
+#    mdn_admin.doctrine.entity_listener_resolver:
+#        class: MDN\AdminBundle\Doctrine\EntityListenerResolver
+#        arguments: [ "@service_container" ]
 
 #doctrine:
 #    orm:
