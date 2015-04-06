@@ -48,3 +48,12 @@ Into your app/config/security.yml get sure you have the config:
         access_control:
             - { path: ^/admin/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
             - { path: ^/admin/, roles: ROLE_ADMIN }
+
+### Loading data 
+
+Using Workbench load the tables into the database by using in the menu Database > Forward Engineer.
+
+Run the command:
+
+    php app/console doctrine:fixtures:load
+

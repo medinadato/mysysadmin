@@ -156,7 +156,7 @@ class User implements AdvancedUserInterface
      */
     public function setPassword($password)
     {
-        echo "porra";
+//        echo "porra";
         $this->password = $password;
     
         return $this;

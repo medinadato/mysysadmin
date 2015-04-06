@@ -13,14 +13,14 @@ class UserListener
      */
     private $container;
     
-    /**
-     * 
-     * @param \Symfony\Component\DependencyInjection\Container $container
-     */
-    public function __construct(Container $container) {
-        $this->container = $container;
-        die('a');
-    }
+//    /**
+//     * 
+//     * @param \Symfony\Component\DependencyInjection\Container $container
+//     */
+//    public function __construct(Container $container) {
+//        $this->container = $container;
+//        die('a');
+//    }
     
     /**
      * 
@@ -30,11 +30,11 @@ class UserListener
     public function prePersist(User $user, LifecycleEventArgs $event)
     {
         
-        $entityManager = $args->getEntityManager();
-        
-        $user->setPassword('88');
-        
-        $entityManager->merge($user);
-        $entityManager->flush();
+//        $entityManager = $event->getEntityManager();
+//        
+//        $user->setPassword('88');
+//        
+//        $entityManager->merge($user);
+//        $entityManager->flush();
     }
 }
